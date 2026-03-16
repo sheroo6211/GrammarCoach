@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GrammarCoach — AI Writing Improver</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0e0f13;
+  --bg2: #15161c;
+  --bg3: #1c1e27;
+  --surface: #1e2030;
+  --surface2: #252840;
+  --border: #2e3148;
+  --border2: #3d4166;
+  --emerald: #00c896;
+  --emerald2: #00f0b4;
+  --emerald-dim: rgba(0,200,150,0.12);
+  --emerald-glow: rgba(0,200,150,0.25);
+  --red: #ff5c7a;
+  --red-dim: rgba(255,92,122,0.12);
+  --amber: #ffb547;
+  --amber-dim: rgba(255,181,71,0.12);
+  --blue: #5b8dee;
+  --text: #eef0f8;
+  --text2: #9ea3bf;
+  --text3: #5c6080;
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --shadow-lg: 0 12px 48px rgba(0,0,0,0.6);
+  --shadow-emerald: 0 0 32px rgba(0,200,150,0.15);
+  --radius: 12px;
+  --radius-lg: 20px;
+  --font: 'Plus Jakarta Sans', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Ambient background */
+body::before {
+  content: '';
+  position: fixed;
+  top: -200px;
+  left: -200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(0,200,150,0.06) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+body::after {
+  content: '';
+  position: fixed;
+  bottom: -200px;
+  right: -200px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(91,141,238,0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.app { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 0 20px 80px; }
+
+/* ===== HEADER ===== */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.logo { display: flex; align-items: center; gap: 12px; }
+.logo-icon {
+  width: 40px; height: 40px;
+  background: linear-gradient(135deg, var(--emerald), #00a87a);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  box-shadow: var(--shadow-emerald);
+}
+.logo-name {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
+.logo-name span { color: var(--emerald); }
+
+.header-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+.pro-badge {
+  background: linear-gradient(135deg, var(--emerald), #00a87a);
+  color: #000;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  display: none;
+}
+.pro-badge.visible { display: inline-block; }
+
+.btn-ghost {
+  padding: 8px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text2);
+  font-family: var(--font);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-ghost:hover { border-color: var(--emerald); color: var(--emerald); }
+
+.btn-upgrade {
+  padding: 8px 16px;
+  background: var(--emerald-dim);
+  border: 1px solid var(--emerald);
+  border-radius: 8px;
+  color: var(--emerald);
+  font-family: var(--font);
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-upgrade:hover { background: var(--emerald); color: #000; }
+
+/* ===== HERO ===== */
+.hero {
+  text-align: center;
+  padding: 60px 0 48px;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--emerald-dim);
+  border: 1px solid var(--emerald);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--emerald);
+  margin-bottom: 20px;
+}
+
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  line-height: 1.15;
+  color: var(--text);
+  margin-bottom: 16px;
+  letter-spacing: -1px;
+}
+.hero-title em { color: var(--emerald); font-style: italic; }
+
+.hero-sub {
+  color: var(--text2);
+  font-size: 1rem;
+  line-height: 1.7;
+  max-width: 520px;
+  margin: 0 auto 36px;
+}
+
+/* ===== USAGE BAR ===== */
+.usage-bar-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+.usage-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 0.78rem;
+  color: var(--text2);
+}
+.usage-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--emerald); }
+.usage-dot.warn { background: var(--amber); }
+.usage-dot.danger { background: var(--red); }
+
+/* ===== MAIN CARD ===== */
+.main-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 24px;
+}
+
+.card-toolbar {
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.tone-selector { display: flex; gap: 6px; }
+.tone-btn {
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text3);
+  font-family: var(--font);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tone-btn:hover { border-color: var(--emerald); color: var(--emerald); }
+.tone-btn.active { background: var(--emerald-dim); border-color: var(--emerald); color: var(--emerald); }
+.tone-btn.locked { opacity: 0.4; cursor: not-allowed; position: relative; }
+.tone-btn.locked::after { content: '⚡'; font-size: 0.65rem; margin-left: 4px; }
+
+.word-count {
+  font-size: 0.75rem;
+  color: var(--text3);
+  font-weight: 500;
+}
+.word-count.warn { color: var(--amber); }
+.word-count.over { color: var(--red); }
+
+/* ===== INPUT AREA ===== */
+.input-area { padding: 0; }
+
+textarea#main-input {
+  width: 100%;
+  min-height: 200px;
+  padding: 24px;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 1rem;
+  line-height: 1.7;
+  resize: vertical;
+  outline: none;
+}
+textarea#main-input::placeholder { color: var(--text3); }
+
+.input-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-check {
+  padding: 14px 32px;
+  background: linear-gradient(135deg, var(--emerald), #00a87a);
+  border: none;
+  border-radius: var(--radius);
+  color: #000;
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: var(--shadow-emerald);
+  white-space: nowrap;
+}
+.btn-check:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(0,200,150,0.3); }
+.btn-check:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.btn-clear {
+  padding: 14px 20px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text3);
+  font-family: var(--font);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-clear:hover { border-color: var(--red); color: var(--red); }
+
+/* ===== LOADING ===== */
+.loading-state {
+  padding: 48px 24px;
+  text-align: center;
+  display: none;
+}
+.loading-state.visible { display: block; }
+.loading-dots { display: flex; justify-content: center; gap: 6px; margin-bottom: 16px; }
+.loading-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--emerald);
+  animation: dotPulse 1.4s ease-in-out infinite;
+}
+.loading-dot:nth-child(2) { animation-delay: 0.2s; }
+.loading-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dotPulse {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1); opacity: 1; }
+}
+.loading-text { color: var(--text2); font-size: 0.9rem; }
+
+/* ===== RESULTS ===== */
+.results-area { display: none; }
+.results-area.visible { display: block; }
+
+.results-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+}
+
+.results-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.results-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.results-title-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+}
+
+.copy-btn {
+  padding: 6px 14px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text2);
+  font-family: var(--font);
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.copy-btn:hover { border-color: var(--emerald); color: var(--emerald); }
+
+.results-body {
+  padding: 20px 24px;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--text);
+}
+
+/* Comparison view */
+.comparison-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 640px) { .comparison-grid { grid-template-columns: 1fr; } }
+
+.comparison-box {
+  background: var(--bg3);
+  border-radius: var(--radius);
+  padding: 16px;
+  border: 1px solid var(--border);
+}
+.comparison-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.comparison-label.before { color: var(--red); }
+.comparison-label.after { color: var(--emerald); }
+.comparison-text { font-size: 0.88rem; line-height: 1.7; color: var(--text2); }
+
+/* Corrections list */
+.correction-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.85rem;
+}
+.correction-item:last-child { border-bottom: none; }
+.correction-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+.correction-content {}
+.correction-original { color: var(--red); font-weight: 600; margin-bottom: 2px; text-decoration: line-through; }
+.correction-fixed { color: var(--emerald); font-weight: 600; margin-bottom: 4px; }
+.correction-reason { color: var(--text2); font-size: 0.78rem; line-height: 1.5; }
+
+/* Vocab enhancer */
+.vocab-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.85rem;
+}
+.vocab-item:last-child { border-bottom: none; }
+.vocab-weak { color: var(--text3); text-decoration: line-through; min-width: 80px; }
+.vocab-arrow { color: var(--text3); }
+.vocab-strong { color: var(--emerald2); font-weight: 600; }
+.vocab-reason { color: var(--text3); font-size: 0.75rem; margin-left: auto; }
+
+/* Locked overlay */
+.locked-overlay {
+  position: relative;
+}
+.locked-overlay::after {
+  content: '⚡ Pro Feature — Upgrade to unlock';
+  position: absolute;
+  inset: 0;
+  background: rgba(14,15,19,0.85);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--emerald);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+}
+
+/* ===== FEATURES ===== */
+.features-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin-top: 40px;
+}
+.feature-chip {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 16px;
+  transition: all 0.2s;
+}
+.feature-chip:hover { border-color: var(--emerald); box-shadow: var(--shadow-emerald); }
+.feature-chip-icon { font-size: 1.5rem; margin-bottom: 8px; }
+.feature-chip-name { font-weight: 700; font-size: 0.88rem; color: var(--text); margin-bottom: 3px; }
+.feature-chip-desc { font-size: 0.75rem; color: var(--text3); line-height: 1.4; }
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(8px);
+  z-index: 10000;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.2s ease;
+}
+.modal-overlay.hidden { display: none; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.modal-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 40px 32px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+.modal-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--emerald), var(--blue), var(--emerald));
+}
+.modal-glow {
+  position: absolute;
+  top: -60px; left: 50%; transform: translateX(-50%);
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, var(--emerald-glow), transparent 70%);
+  pointer-events: none;
+}
+.modal-icon { font-size: 2.5rem; margin-bottom: 12px; position: relative; }
+.modal-title {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  color: var(--text);
+  margin-bottom: 8px;
+  position: relative;
+}
+.modal-desc { font-size: 0.88rem; color: var(--text2); line-height: 1.7; margin-bottom: 20px; position: relative; }
+.modal-price {
+  font-family: var(--font-serif);
+  font-size: 2.8rem;
+  color: var(--emerald);
+  line-height: 1;
+  margin-bottom: 4px;
+  position: relative;
+}
+.modal-price-sub { font-size: 0.72rem; color: var(--text3); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; }
+.modal-features {
+  text-align: left;
+  background: var(--bg3);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  position: relative;
+}
+.modal-feature {
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 0;
+  font-size: 0.83rem; color: var(--text2);
+  border-bottom: 1px solid var(--border);
+}
+.modal-feature:last-child { border-bottom: none; }
+.modal-feature .chk { color: var(--emerald); font-size: 0.9rem; }
+
+.btn-buy {
+  width: 100%; padding: 16px;
+  background: linear-gradient(135deg, var(--emerald), #00a87a);
+  border: none; border-radius: var(--radius);
+  color: #000; font-family: var(--font);
+  font-weight: 800; font-size: 0.95rem;
+  cursor: pointer; transition: all 0.2s;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-emerald);
+  position: relative;
+}
+.btn-buy:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(0,200,150,0.35); }
+
+.unlock-row { display: flex; gap: 8px; margin-bottom: 12px; position: relative; }
+.unlock-input {
+  flex: 1; padding: 11px 14px;
+  background: var(--bg3);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text); font-family: var(--font);
+  font-size: 0.82rem; letter-spacing: 2px;
+  text-align: center; text-transform: uppercase;
+  outline: none; transition: border-color 0.2s;
+}
+.unlock-input:focus { border-color: var(--emerald); }
+.btn-redeem {
+  padding: 11px 14px;
+  background: var(--bg3);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text2); font-family: var(--font);
+  font-size: 0.78rem; cursor: pointer; transition: all 0.2s;
+}
+.btn-redeem:hover { border-color: var(--emerald); color: var(--emerald); }
+.modal-close {
+  background: none; border: none;
+  color: var(--text3); font-family: var(--font);
+  font-size: 0.78rem; cursor: pointer;
+  text-decoration: underline; padding: 8px;
+  position: relative;
+}
+
+/* Share modal */
+.share-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.share-btn {
+  padding: 14px 10px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--bg3);
+  color: var(--text2); font-family: var(--font);
+  font-size: 0.78rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 6px;
+  text-decoration: none;
+}
+.share-btn:hover { border-color: var(--emerald); color: var(--emerald); }
+.share-icon { font-size: 1.4rem; }
+
+/* Toast */
+#toast-container {
+  position: fixed; bottom: 24px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 99999; display: flex;
+  flex-direction: column; gap: 8px;
+  pointer-events: none;
+}
+.toast {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px 20px;
+  font-size: 0.85rem; color: var(--text);
+  box-shadow: var(--shadow-lg);
+  animation: toastIn 0.3s ease;
+  white-space: nowrap;
+}
+@keyframes toastIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+
+<div id="toast-container"></div>
+
+<!-- ===== PREMIUM MODAL ===== -->
+<div class="modal-overlay hidden" id="premium-modal">
+  <div class="modal-box">
+    <div class="modal-glow"></div>
+    <div class="modal-icon">⚡</div>
+    <div class="modal-title">Upgrade to Pro</div>
+    <div class="modal-desc">Unlock unlimited checks, all tones, AI explanations and more.</div>
+    <div class="modal-price">$2.99</div>
+    <div class="modal-price-sub">ONE-TIME — YOURS FOREVER</div>
+    <div class="modal-features">
+      <div class="modal-feature"><span class="chk">✓</span> Unlimited word count</div>
+      <div class="modal-feature"><span class="chk">✓</span> Unlimited daily checks</div>
+      <div class="modal-feature"><span class="chk">✓</span> All 3 tones — Professional, Casual, Academic</div>
+      <div class="modal-feature"><span class="chk">✓</span> AI explains every correction</div>
+      <div class="modal-feature"><span class="chk">✓</span> Before/after comparison view</div>
+      <div class="modal-feature"><span class="chk">✓</span> Vocabulary enhancer</div>
+    </div>
+    <div class="unlock-row">
+      <input class="unlock-input" type="text" id="unlock-input" placeholder="HAVE A CODE?" maxlength="20">
+      <button class="btn-redeem" onclick="redeemCode()">Redeem</button>
+    </div>
+    <button class="btn-buy" onclick="handleUpgrade()">⚡ Unlock Pro — $2.99</button>
+    <br>
+    <button class="modal-close" onclick="closeModal('premium-modal')">Maybe later</button>
+  </div>
+</div>
+
+<!-- ===== SHARE MODAL ===== -->
+<div class="modal-overlay hidden" id="share-modal">
+  <div class="modal-box">
+    <div class="modal-icon">🚀</div>
+    <div class="modal-title">Share GrammarCoach</div>
+    <div class="modal-desc">Know someone who wants to write better? Share this free tool!</div>
+    <div class="share-grid">
+      <a class="share-btn" id="share-whatsapp" href="#" target="_blank"><span class="share-icon">💬</span>WhatsApp</a>
+      <a class="share-btn" id="share-twitter" href="#" target="_blank"><span class="share-icon">🐦</span>Twitter / X</a>
+      <a class="share-btn" id="share-reddit" href="#" target="_blank"><span class="share-icon">🤖</span>Reddit</a>
+      <button class="share-btn" onclick="copyLink()"><span class="share-icon">🔗</span>Copy Link</button>
+    </div>
+    <button class="modal-close" onclick="closeModal('share-modal')">Close</button>
+  </div>
+</div>
+
+<div class="app">
+  <header>
+    <div class="logo">
+      <div class="logo-icon">✍</div>
+      <span class="logo-name">Grammar<span>Coach</span></span>
+    </div>
+    <div class="header-right">
+      <span class="pro-badge" id="pro-badge">PRO ✓</span>
+      <button class="btn-upgrade" id="upgrade-btn" onclick="openPremiumModal()">⚡ Upgrade — $2.99</button>
+      <button class="btn-ghost" onclick="openShareModal()">📤 Share</button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-eyebrow">✦ AI-Powered Writing Coach</div>
+    <h1 class="hero-title">Write <em>smarter.</em><br>Sound <em>professional.</em></h1>
+    <p class="hero-sub">Paste any text — emails, essays, messages — and get instant AI-powered grammar fixes, rewrites, and improvement tips.</p>
+
+    <div class="usage-bar-wrap">
+      <div class="usage-pill">
+        <div class="usage-dot" id="checks-dot"></div>
+        <span id="checks-label">5 checks remaining today</span>
+      </div>
+      <div class="usage-pill">
+        <div class="usage-dot" id="words-dot"></div>
+        <span>300 words free · Unlimited with Pro</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Input Card -->
+  <div class="main-card">
+    <div class="card-toolbar">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:0.72rem;color:var(--text3);font-weight:600;letter-spacing:1px;text-transform:uppercase;">Tone</span>
+        <div class="tone-selector">
+          <button class="tone-btn active" id="tone-professional" onclick="selectTone('professional')">Professional</button>
+          <button class="tone-btn locked" id="tone-casual" onclick="requireProTone('casual')">Casual</button>
+          <button class="tone-btn locked" id="tone-academic" onclick="requireProTone('academic')">Academic</button>
+        </div>
+      </div>
+      <div class="word-count" id="word-count">0 / 300 words</div>
+    </div>
+
+    <div class="input-area">
+      <textarea id="main-input" placeholder="Paste or type your text here...&#10;&#10;Example: &quot;i went to the store yesterday and buyed some milk, its was very cheap and me and my friend was happy about it&quot;" oninput="onInput()"></textarea>
+    </div>
+
+    <div class="loading-state" id="loading-state">
+      <div class="loading-dots">
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+      </div>
+      <div class="loading-text">AI is analyzing your writing...</div>
+    </div>
+
+    <div class="input-footer">
+      <button class="btn-clear" onclick="clearAll()">✕ Clear</button>
+      <button class="btn-check" id="check-btn" onclick="checkGrammar()">✨ Check & Improve</button>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div class="results-area" id="results-area">
+
+    <!-- Rewritten text -->
+    <div class="results-card">
+      <div class="results-header">
+        <div class="results-title">
+          <div class="results-title-dot" style="background:var(--emerald)"></div>
+          Improved Version
+        </div>
+        <button class="copy-btn" onclick="copyResult('rewritten-text')">Copy</button>
+      </div>
+      <div class="results-body" id="rewritten-text"></div>
+    </div>
+
+    <!-- Before/After comparison — PRO -->
+    <div class="results-card" id="comparison-card">
+      <div class="results-header">
+        <div class="results-title">
+          <div class="results-title-dot" style="background:var(--blue)"></div>
+          Before / After Comparison
+          <span style="font-size:0.65rem;background:var(--emerald-dim);border:1px solid var(--emerald);color:var(--emerald);padding:2px 7px;border-radius:4px;letter-spacing:1px;font-weight:800;">PRO</span>
+        </div>
+      </div>
+      <div class="results-body" id="comparison-body">
+        <div class="comparison-grid">
+          <div class="comparison-box">
+            <div class="comparison-label before">Before</div>
+            <div class="comparison-text" id="before-text"></div>
+          </div>
+          <div class="comparison-box">
+            <div class="comparison-label after">After</div>
+            <div class="comparison-text" id="after-text"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Corrections explained — PRO -->
+    <div class="results-card" id="corrections-card">
+      <div class="results-header">
+        <div class="results-title">
+          <div class="results-title-dot" style="background:var(--amber)"></div>
+          Corrections Explained
+          <span style="font-size:0.65rem;background:var(--emerald-dim);border:1px solid var(--emerald);color:var(--emerald);padding:2px 7px;border-radius:4px;letter-spacing:1px;font-weight:800;">PRO</span>
+        </div>
+      </div>
+      <div class="results-body" id="corrections-list"></div>
+    </div>
+
+    <!-- Vocabulary enhancer — PRO -->
+    <div class="results-card" id="vocab-card">
+      <div class="results-header">
+        <div class="results-title">
+          <div class="results-title-dot" style="background:var(--amber)"></div>
+          Vocabulary Enhancer
+          <span style="font-size:0.65rem;background:var(--emerald-dim);border:1px solid var(--emerald);color:var(--emerald);padding:2px 7px;border-radius:4px;letter-spacing:1px;font-weight:800;">PRO</span>
+        </div>
+      </div>
+      <div class="results-body" id="vocab-list"></div>
+    </div>
+
+    <div style="text-align:center;margin-top:8px">
+      <button class="btn-upgrade" onclick="openPremiumModal()" id="results-upgrade-btn" style="padding:12px 28px;font-size:0.85rem">⚡ Unlock all Pro features — $2.99</button>
+    </div>
+
+  </div>
+
+  <!-- Features -->
+  <div class="features-row">
+    <div class="feature-chip">
+      <div class="feature-chip-icon">🔧</div>
+      <div class="feature-chip-name">Grammar Fix</div>
+      <div class="feature-chip-desc">Catches and fixes all grammar and spelling mistakes instantly</div>
+    </div>
+    <div class="feature-chip">
+      <div class="feature-chip-icon">✨</div>
+      <div class="feature-chip-name">AI Rewrite</div>
+      <div class="feature-chip-desc">Rewrites your text to sound polished and professional</div>
+    </div>
+    <div class="feature-chip">
+      <div class="feature-chip-icon">🎯</div>
+      <div class="feature-chip-name">3 Tones</div>
+      <div class="feature-chip-desc">Professional, Casual, and Academic — adapt to any situation</div>
+    </div>
+    <div class="feature-chip">
+      <div class="feature-chip-icon">📖</div>
+      <div class="feature-chip-name">Vocab Boost</div>
+      <div class="feature-chip-desc">Suggests stronger, more impressive words for your writing</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ============================================================
+// CONFIG
+// ============================================================
+const OWNER_CODE = 'GRAMMARCOACH2024';
+const GUMROAD_LINK = 'https://gumroad.com/l/grammarcoach';
+const APP_URL = 'https://sheroo6211.github.io/GrammarCoach';
+const APP_MSG = 'Fix your grammar and write like a pro with GrammarCoach — free AI writing improver! ✍️';
+const FREE_WORD_LIMIT = 300;
+const FREE_DAILY_CHECKS = 5;
+
+// ============================================================
+// STATE
+// ============================================================
+let state = { isPremium: false };
+let selectedTone = 'professional';
+let lastInput = '';
+
+function loadState() {
+  try {
+    const s = localStorage.getItem('gc_state');
+    if (s) Object.assign(state, JSON.parse(s));
+  } catch(e) {}
+}
+
+function saveState() {
+  localStorage.setItem('gc_state', JSON.stringify(state));
+}
+
+// Daily checks tracking
+function getTodayKey() {
+  return 'gc_checks_' + new Date().toISOString().split('T')[0];
+}
+function getChecksUsed() {
+  return parseInt(localStorage.getItem(getTodayKey()) || '0');
+}
+function incrementChecks() {
+  const key = getTodayKey();
+  localStorage.setItem(key, (getChecksUsed() + 1).toString());
+}
+function getChecksLeft() {
+  if (state.isPremium) return Infinity;
+  return Math.max(0, FREE_DAILY_CHECKS - getChecksUsed());
+}
+
+// ============================================================
+// UI UPDATES
+// ============================================================
+function updateUsageUI() {
+  const left = getChecksLeft();
+  const label = document.getElementById('checks-label');
+  const dot = document.getElementById('checks-dot');
+
+  if (state.isPremium) {
+    label.textContent = 'Unlimited checks (Pro)';
+    dot.className = 'usage-dot';
+  } else {
+    label.textContent = `${left} check${left !== 1 ? 's' : ''} remaining today`;
+    dot.className = 'usage-dot' + (left <= 1 ? ' danger' : left <= 2 ? ' warn' : '');
+  }
+}
+
+function onInput() {
+  const text = document.getElementById('main-input').value;
+  const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+  const wc = document.getElementById('word-count');
+  const isOver = !state.isPremium && words > FREE_WORD_LIMIT;
+  wc.textContent = `${words} / ${state.isPremium ? '∞' : FREE_WORD_LIMIT} words`;
+  wc.className = 'word-count' + (isOver ? ' over' : words > FREE_WORD_LIMIT * 0.85 && !state.isPremium ? ' warn' : '');
+}
+
+function selectTone(tone) {
+  selectedTone = tone;
+  document.querySelectorAll('.tone-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tone-' + tone).classList.add('active');
+}
+
+function requireProTone(tone) {
+  if (state.isPremium) {
+    document.getElementById('tone-' + tone).classList.remove('locked');
+    selectTone(tone);
+  } else {
+    openPremiumModal();
+  }
+}
+
+// ============================================================
+// MAIN CHECK
+// ============================================================
+async function checkGrammar() {
+  const input = document.getElementById('main-input').value.trim();
+  if (!input) { showToast('Please enter some text first!'); return; }
+
+  const words = input.split(/\s+/).length;
+
+  // Check word limit
+  if (!state.isPremium && words > FREE_WORD_LIMIT) {
+    showToast(`Free limit is ${FREE_WORD_LIMIT} words. Upgrade to Pro for unlimited!`);
+    openPremiumModal();
+    return;
+  }
+
+  // Check daily limit
+  if (!state.isPremium && getChecksLeft() <= 0) {
+    showToast('Daily limit reached! Upgrade to Pro for unlimited checks.');
+    openPremiumModal();
+    return;
+  }
+
+  lastInput = input;
+  incrementChecks();
+  updateUsageUI();
+
+  // Show loading
+  document.getElementById('loading-state').classList.add('visible');
+  document.getElementById('results-area').classList.remove('visible');
+  document.getElementById('check-btn').disabled = true;
+
+  const prompt = state.isPremium
+    ? `You are an expert writing coach. Analyze this text and return ONLY a valid JSON object with no markdown or backticks:
+{
+  "rewritten": "improved full text in ${selectedTone} tone",
+  "before": "original text (copy exactly)",
+  "after": "improved text (same as rewritten)",
+  "corrections": [
+    {"original": "wrong phrase", "fixed": "corrected phrase", "reason": "brief explanation"}
+  ],
+  "vocabulary": [
+    {"weak": "basic word", "strong": "better word", "reason": "why it's better"}
+  ]
+}
+Provide 3-5 corrections and 3-4 vocabulary suggestions. Be specific.
+
+Text: "${input}"`
+    : `You are an expert writing coach. Rewrite the following text to fix all grammar mistakes and make it sound ${selectedTone}. Return ONLY a JSON object with no markdown or backticks:
+{"rewritten": "the improved text here"}
+
+Text: "${input}"`;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    const data = await response.json();
+    const text = data.content.map(i => i.text || '').join('');
+    const clean = text.replace(/```json|```/g, '').trim();
+    const result = JSON.parse(clean);
+
+    displayResults(result, input);
+
+  } catch(err) {
+    showToast('Something went wrong. Please try again.');
+    console.error(err);
+  }
+
+  document.getElementById('loading-state').classList.remove('visible');
+  document.getElementById('check-btn').disabled = false;
+}
+
+function displayResults(result, original) {
+  // Rewritten
+  document.getElementById('rewritten-text').textContent = result.rewritten || '';
+
+  if (state.isPremium) {
+    // Before/after
+    document.getElementById('before-text').textContent = original;
+    document.getElementById('after-text').textContent = result.rewritten || '';
+    document.getElementById('comparison-card').classList.remove('locked-overlay');
+
+    // Corrections
+    const corrEl = document.getElementById('corrections-list');
+    if (result.corrections && result.corrections.length > 0) {
+      corrEl.innerHTML = result.corrections.map(c => `
+        <div class="correction-item">
+          <span class="correction-icon">🔧</span>
+          <div class="correction-content">
+            <div class="correction-original">${c.original}</div>
+            <div class="correction-fixed">${c.fixed}</div>
+            <div class="correction-reason">${c.reason}</div>
+          </div>
+        </div>
+      `).join('');
+    } else {
+      corrEl.innerHTML = '<div style="color:var(--emerald);font-size:0.85rem;padding:8px 0">✓ No corrections needed — your writing is already strong!</div>';
+    }
+    document.getElementById('corrections-card').classList.remove('locked-overlay');
+
+    // Vocabulary
+    const vocabEl = document.getElementById('vocab-list');
+    if (result.vocabulary && result.vocabulary.length > 0) {
+      vocabEl.innerHTML = result.vocabulary.map(v => `
+        <div class="vocab-item">
+          <span class="vocab-weak">${v.weak}</span>
+          <span class="vocab-arrow">→</span>
+          <span class="vocab-strong">${v.strong}</span>
+          <span class="vocab-reason">${v.reason}</span>
+        </div>
+      `).join('');
+    } else {
+      vocabEl.innerHTML = '<div style="color:var(--emerald);font-size:0.85rem;padding:8px 0">✓ Your vocabulary is already excellent!</div>';
+    }
+    document.getElementById('vocab-card').classList.remove('locked-overlay');
+    document.getElementById('results-upgrade-btn').style.display = 'none';
+
+  } else {
+    // Lock pro sections
+    document.getElementById('comparison-card').classList.add('locked-overlay');
+    document.getElementById('corrections-card').classList.add('locked-overlay');
+    document.getElementById('vocab-card').classList.add('locked-overlay');
+    document.getElementById('results-upgrade-btn').style.display = 'inline-block';
+
+    // Add click to locked cards
+    ['comparison-card','corrections-card','vocab-card'].forEach(id => {
+      document.getElementById(id).onclick = openPremiumModal;
+    });
+  }
+
+  document.getElementById('results-area').classList.add('visible');
+  document.getElementById('results-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ============================================================
+// UTILS
+// ============================================================
+function clearAll() {
+  document.getElementById('main-input').value = '';
+  document.getElementById('results-area').classList.remove('visible');
+  document.getElementById('word-count').textContent = '0 / 300 words';
+  document.getElementById('word-count').className = 'word-count';
+}
+
+function copyResult(id) {
+  const text = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard! ✓'));
+}
+
+function showToast(msg) {
+  const c = document.getElementById('toast-container');
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+// ============================================================
+// PREMIUM
+// ============================================================
+function openPremiumModal() {
+  document.getElementById('premium-modal').classList.remove('hidden');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.add('hidden');
+}
+function handleUpgrade() {
+  window.open(GUMROAD_LINK, '_blank');
+  showToast('Complete payment then enter your code!');
+}
+function redeemCode() {
+  const code = document.getElementById('unlock-input').value.trim().toUpperCase();
+  if (code === OWNER_CODE || code.startsWith('GC-')) {
+    state.isPremium = true;
+    saveState();
+    closeModal('premium-modal');
+    document.getElementById('pro-badge').classList.add('visible');
+    document.getElementById('upgrade-btn').style.display = 'none';
+    // Unlock tone buttons
+    document.querySelectorAll('.tone-btn.locked').forEach(b => b.classList.remove('locked'));
+    onInput();
+    updateUsageUI();
+    showToast('🎉 Pro unlocked! Enjoy unlimited everything.');
+  } else {
+    showToast('Invalid code — please check and try again.');
+  }
+}
+
+// ============================================================
+// SHARE
+// ============================================================
+function openShareModal() {
+  document.getElementById('share-whatsapp').href = `https://wa.me/?text=${encodeURIComponent(APP_MSG + ' ' + APP_URL)}`;
+  document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(APP_MSG)}&url=${encodeURIComponent(APP_URL)}`;
+  document.getElementById('share-reddit').href = `https://reddit.com/submit?url=${encodeURIComponent(APP_URL)}&title=${encodeURIComponent('Free AI grammar checker and writing improver — GrammarCoach')}`;
+  document.getElementById('share-modal').classList.remove('hidden');
+}
+function copyLink() {
+  navigator.clipboard.writeText(APP_URL).then(() => {
+    showToast('Link copied! 🔗');
+    closeModal('share-modal');
+  });
+}
+
+// ============================================================
+// INIT
+// ============================================================
+loadState();
+updateUsageUI();
+if (state.isPremium) {
+  document.getElementById('pro-badge').classList.add('visible');
+  document.getElementById('upgrade-btn').style.display = 'none';
+  document.querySelectorAll('.tone-btn.locked').forEach(b => b.classList.remove('locked'));
+}
+</script>
+</body>
+</html>
