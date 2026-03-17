@@ -960,51 +960,104 @@ async function checkGrammar() {
   document.getElementById('results-area').classList.remove('visible');
   document.getElementById('check-btn').disabled = true;
 
-  const prompt = state.isPremium
-    ? `You are an expert writing coach. Analyze this text and return ONLY a valid JSON object with no markdown or backticks:
-{
-  "rewritten": "improved full text in ${selectedTone} tone",
-  "before": "original text (copy exactly)",
-  "after": "improved text (same as rewritten)",
-  "corrections": [
-    {"original": "wrong phrase", "fixed": "corrected phrase", "reason": "brief explanation"}
-  ],
-  "vocabulary": [
-    {"weak": "basic word", "strong": "better word", "reason": "why it's better"}
-  ]
-}
-Provide 3-5 corrections and 3-4 vocabulary suggestions. Be specific.
-
-Text: "${input}"`
-    : `You are an expert writing coach. Rewrite the following text to fix all grammar mistakes and make it sound ${selectedTone}. Return ONLY a JSON object with no markdown or backticks:
-{"rewritten": "the improved text here"}
-
-Text: "${input}"`;
-
-  try {
-    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyBRkZgTUKvhiDKdZOSB72seZKEAzwVQiqI', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.7, maxOutputTokens: 1000 }
-      })
-    });
-
-    const data = await response.json();
-    const text = data.candidates[0].content.parts[0].text;
-    const clean = text.replace(/```json|```/g, '').trim();
-    const result = JSON.parse(clean);
-
+  // Smart local grammar processing
+  setTimeout(() => {
+    const result = processGrammar(input, selectedTone, state.isPremium);
     displayResults(result, input);
+    document.getElementById('loading-state').classList.remove('visible');
+    document.getElementById('check-btn').disabled = false;
+  }, 800);
+}
 
-  } catch(err) {
-    showToast('Something went wrong. Please try again.');
-    console.error(err);
+function processGrammar(input, tone, isPremium) {
+  let text = input;
+
+  // Fix common grammar issues
+  const corrections = [];
+  const fixes = [
+    { pattern: /\bi\b/g, fix: 'I', reason: '"I" should always be capitalized' },
+    { pattern: /\bdont\b/gi, fix: "don't", reason: 'Missing apostrophe in contraction' },
+    { pattern: /\bcant\b/gi, fix: "can't", reason: 'Missing apostrophe in contraction' },
+    { pattern: /\bwont\b/gi, fix: "won't", reason: 'Missing apostrophe in contraction' },
+    { pattern: /\bisnt\b/gi, fix: "isn't", reason: 'Missing apostrophe in contraction' },
+    { pattern: /\barent\b/gi, fix: "aren't", reason: 'Missing apostrophe in contraction' },
+    { pattern: /\bim\b/gi, fix: "I'm", reason: 'Missing apostrophe in contraction' },
+    { pattern: /\bive\b/gi, fix: "I've", reason: 'Missing apostrophe in contraction' },
+    { pattern: /\bill\b/gi, fix: "I'll", reason: 'Missing apostrophe in contraction' },
+    { pattern: /\bbuyed\b/gi, fix: 'bought', reason: 'Irregular past tense of "buy" is "bought"' },
+    { pattern: /\bgoed\b/gi, fix: 'went', reason: 'Irregular past tense of "go" is "went"' },
+    { pattern: /\bgoeded\b/gi, fix: 'went', reason: 'Irregular past tense of "go" is "went"' },
+    { pattern: /\bmore better\b/gi, fix: 'better', reason: 'Avoid double comparatives' },
+    { pattern: /\bvery unique\b/gi, fix: 'unique', reason: '"Unique" is absolute — no need for "very"' },
+    { pattern: /\b(me and) (\w+)\b/gi, fix: '$2 and I', reason: 'Use "X and I" as subject, not "me and X"' },
+    { pattern: /\bwas went\b/gi, fix: 'went', reason: 'Double past tense — use just "went"' },
+  ];
+
+  fixes.forEach(f => {
+    if (f.pattern.test(text)) {
+      const original = text.match(f.pattern)?.[0];
+      if (original) corrections.push({ original, fixed: original.replace(f.pattern, f.fix), reason: f.reason });
+      text = text.replace(f.pattern, f.fix);
+    }
+  });
+
+  // Capitalize first letter of sentences
+  text = text.replace(/(^\s*\w|[.!?]\s+\w)/g, l => l.toUpperCase());
+
+  // Add period if missing
+  if (text && !text.match(/[.!?]$/)) text += '.';
+
+  // Apply tone adjustments
+  if (tone === 'professional') {
+    text = text
+      .replace(/\bkind of\b/gi, 'somewhat')
+      .replace(/\ba lot of\b/gi, 'numerous')
+      .replace(/\bget\b/gi, 'obtain')
+      .replace(/\bbig\b/gi, 'significant')
+      .replace(/\bgood\b/gi, 'excellent')
+      .replace(/\bshow\b/gi, 'demonstrate')
+      .replace(/\buse\b/gi, 'utilize')
+      .replace(/\bneed\b/gi, 'require')
+      .replace(/\bwant\b/gi, 'would like');
+  } else if (tone === 'casual') {
+    text = text
+      .replace(/\butilize\b/gi, 'use')
+      .replace(/\bdemonstrate\b/gi, 'show')
+      .replace(/\brequire\b/gi, 'need')
+      .replace(/\bobtain\b/gi, 'get');
+  } else if (tone === 'academic') {
+    text = text
+      .replace(/\ba lot of\b/gi, 'a substantial amount of')
+      .replace(/\bbig\b/gi, 'significant')
+      .replace(/\bshow\b/gi, 'demonstrate')
+      .replace(/\buse\b/gi, 'utilize')
+      .replace(/\bfind out\b/gi, 'ascertain')
+      .replace(/\blook into\b/gi, 'investigate')
+      .replace(/\bthink about\b/gi, 'consider');
   }
 
-  document.getElementById('loading-state').classList.remove('visible');
-  document.getElementById('check-btn').disabled = false;
+  // Vocabulary suggestions
+  const vocabMap = [
+    { weak: 'good', strong: 'excellent', reason: 'More impactful' },
+    { weak: 'bad', strong: 'inadequate', reason: 'More precise' },
+    { weak: 'big', strong: 'substantial', reason: 'More professional' },
+    { weak: 'small', strong: 'minimal', reason: 'More formal' },
+    { weak: 'get', strong: 'obtain', reason: 'More professional' },
+    { weak: 'use', strong: 'utilize', reason: 'More formal' },
+    { weak: 'show', strong: 'demonstrate', reason: 'More impactful' },
+    { weak: 'help', strong: 'assist', reason: 'More professional' },
+    { weak: 'make', strong: 'create', reason: 'More precise' },
+    { weak: 'need', strong: 'require', reason: 'More formal' },
+  ];
+  const vocabulary = vocabMap.filter(v => new RegExp(`\\b${v.weak}\\b`, 'i').test(input)).slice(0, 4);
+
+  return {
+    rewritten: text,
+    before: input,
+    after: text,
+    corrections: corrections.slice(0, 5),
+    vocabulary
+  };
 }
 
 function displayResults(result, original) {
