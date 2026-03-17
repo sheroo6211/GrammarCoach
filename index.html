@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="google-site-verification" content="vpIS4AMFZjl61vwjnsuaFHgQU1PLEHsVEFNRPxsPsJs" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GrammarCoach — AI Writing Improver</title>
+<title>GrammarCoach — Write Better English</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -22,7 +22,6 @@
   --red: #ff5c7a;
   --red-dim: rgba(255,92,122,0.12);
   --amber: #ffb547;
-  --amber-dim: rgba(255,181,71,0.12);
   --blue: #5b8dee;
   --text: #eef0f8;
   --text2: #9ea3bf;
@@ -46,594 +45,331 @@ body {
   overflow-x: hidden;
 }
 
-/* Ambient background */
 body::before {
   content: '';
   position: fixed;
-  top: -200px;
-  left: -200px;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(0,200,150,0.06) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-}
-body::after {
-  content: '';
-  position: fixed;
-  bottom: -200px;
-  right: -200px;
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(91,141,238,0.05) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
+  top: -200px; left: -200px;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(0,200,150,0.05) 0%, transparent 70%);
+  pointer-events: none; z-index: 0;
 }
 
 .app { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 0 20px 80px; }
 
-/* ===== HEADER ===== */
+/* HEADER */
 header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px 0;
-  border-bottom: 1px solid var(--border);
-  flex-wrap: wrap;
-  gap: 12px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 0; border-bottom: 1px solid var(--border);
+  flex-wrap: wrap; gap: 12px;
 }
-
 .logo { display: flex; align-items: center; gap: 12px; }
 .logo-icon {
   width: 40px; height: 40px;
   background: linear-gradient(135deg, var(--emerald), #00a87a);
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem;
-  box-shadow: var(--shadow-emerald);
+  border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; box-shadow: var(--shadow-emerald);
 }
-.logo-name {
-  font-family: var(--font-serif);
-  font-size: 1.35rem;
-  color: var(--text);
-  letter-spacing: -0.3px;
-}
+.logo-name { font-family: var(--font-serif); font-size: 1.35rem; color: var(--text); }
 .logo-name span { color: var(--emerald); }
-
 .header-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-
 .pro-badge {
   background: linear-gradient(135deg, var(--emerald), #00a87a);
-  color: #000;
-  font-size: 0.65rem;
-  font-weight: 800;
-  letter-spacing: 2px;
-  padding: 4px 10px;
-  border-radius: 6px;
-  text-transform: uppercase;
-  display: none;
+  color: #000; font-size: 0.65rem; font-weight: 800;
+  letter-spacing: 2px; padding: 4px 10px; border-radius: 6px;
+  text-transform: uppercase; display: none;
 }
 .pro-badge.visible { display: inline-block; }
-
 .btn-ghost {
-  padding: 8px 14px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--text2);
-  font-family: var(--font);
-  font-size: 0.75rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
+  padding: 8px 14px; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text2); font-family: var(--font);
+  font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
 }
 .btn-ghost:hover { border-color: var(--emerald); color: var(--emerald); }
-
 .btn-upgrade {
-  padding: 8px 16px;
-  background: var(--emerald-dim);
-  border: 1px solid var(--emerald);
-  border-radius: 8px;
-  color: var(--emerald);
-  font-family: var(--font);
-  font-size: 0.75rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s;
+  padding: 8px 16px; background: var(--emerald-dim); border: 1px solid var(--emerald);
+  border-radius: 8px; color: var(--emerald); font-family: var(--font);
+  font-size: 0.75rem; font-weight: 700; cursor: pointer; transition: all 0.2s;
 }
 .btn-upgrade:hover { background: var(--emerald); color: #000; }
 
-/* ===== HERO ===== */
-.hero {
-  text-align: center;
-  padding: 60px 0 48px;
+/* NAV */
+.nav-tabs {
+  display: flex; gap: 4px; padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto; scrollbar-width: none;
 }
+.nav-tabs::-webkit-scrollbar { display: none; }
+.nav-tab {
+  padding: 9px 16px; border-radius: 8px; border: none;
+  background: transparent; color: var(--text3); font-family: var(--font);
+  font-size: 0.8rem; font-weight: 600; cursor: pointer;
+  transition: all 0.2s; white-space: nowrap;
+}
+.nav-tab:hover { color: var(--text2); background: var(--bg3); }
+.nav-tab.active { background: var(--emerald-dim); color: var(--emerald); border: 1px solid var(--emerald); }
 
+/* SECTIONS */
+.section { display: none; padding: 36px 0; }
+.section.active { display: block; }
+.section-title { font-family: var(--font-serif); font-size: 1.8rem; color: var(--text); margin-bottom: 6px; }
+.section-title span { color: var(--emerald); font-style: italic; }
+.section-sub { color: var(--text3); font-size: 0.88rem; line-height: 1.6; margin-bottom: 28px; }
+
+/* HERO */
+.hero { text-align: center; padding: 56px 0 40px; }
 .hero-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--emerald-dim);
-  border: 1px solid var(--emerald);
-  border-radius: 20px;
-  padding: 5px 14px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--emerald);
-  margin-bottom: 20px;
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--emerald-dim); border: 1px solid var(--emerald);
+  border-radius: 20px; padding: 5px 14px;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--emerald); margin-bottom: 20px;
 }
-
 .hero-title {
-  font-family: var(--font-serif);
-  font-size: clamp(2.2rem, 5vw, 3.5rem);
-  line-height: 1.15;
-  color: var(--text);
-  margin-bottom: 16px;
-  letter-spacing: -1px;
+  font-family: var(--font-serif); font-size: clamp(2rem, 5vw, 3.2rem);
+  line-height: 1.15; color: var(--text); margin-bottom: 16px; letter-spacing: -1px;
 }
 .hero-title em { color: var(--emerald); font-style: italic; }
+.hero-sub { color: var(--text2); font-size: 1rem; line-height: 1.7; max-width: 500px; margin: 0 auto 36px; }
 
-.hero-sub {
-  color: var(--text2);
-  font-size: 1rem;
-  line-height: 1.7;
-  max-width: 520px;
-  margin: 0 auto 36px;
-}
+.hero-stats { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; margin-bottom: 32px; }
+.hero-stat { text-align: center; }
+.hero-stat-num { font-family: var(--font-serif); font-size: 1.8rem; color: var(--emerald); line-height: 1; }
+.hero-stat-label { font-size: 0.72rem; color: var(--text3); margin-top: 4px; letter-spacing: 1px; text-transform: uppercase; }
 
-/* ===== USAGE BAR ===== */
-.usage-bar-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 32px;
-  flex-wrap: wrap;
+/* CARDS */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); overflow: hidden;
+  margin-bottom: 16px; transition: all 0.2s;
 }
-.usage-pill {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 6px 14px;
-  font-size: 0.78rem;
-  color: var(--text2);
+.card:hover { border-color: var(--border2); }
+.card-header {
+  padding: 16px 20px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
 }
-.usage-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--emerald); }
-.usage-dot.warn { background: var(--amber); }
-.usage-dot.danger { background: var(--red); }
+.card-title { font-size: 0.9rem; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 8px; }
+.card-body { padding: 20px 24px; }
 
-/* ===== MAIN CARD ===== */
-.main-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-lg);
-  margin-bottom: 24px;
-}
-
-.card-toolbar {
-  background: var(--bg3);
-  border-bottom: 1px solid var(--border);
-  padding: 14px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.tone-selector { display: flex; gap: 6px; }
-.tone-btn {
-  padding: 6px 14px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--text3);
-  font-family: var(--font);
-  font-size: 0.75rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.tone-btn:hover { border-color: var(--emerald); color: var(--emerald); }
-.tone-btn.active { background: var(--emerald-dim); border-color: var(--emerald); color: var(--emerald); }
-.tone-btn.locked { opacity: 0.4; cursor: not-allowed; position: relative; }
-.tone-btn.locked::after { content: '⚡'; font-size: 0.65rem; margin-left: 4px; }
-
-.word-count {
-  font-size: 0.75rem;
-  color: var(--text3);
-  font-weight: 500;
-}
-.word-count.warn { color: var(--amber); }
-.word-count.over { color: var(--red); }
-
-/* ===== INPUT AREA ===== */
-.input-area { padding: 0; }
-
-textarea#main-input {
-  width: 100%;
-  min-height: 200px;
-  padding: 24px;
-  background: transparent;
-  border: none;
-  color: var(--text);
-  font-family: var(--font);
-  font-size: 1rem;
-  line-height: 1.7;
-  resize: vertical;
-  outline: none;
-}
-textarea#main-input::placeholder { color: var(--text3); }
-
-.input-footer {
-  padding: 16px 24px;
-  border-top: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.btn-check {
-  padding: 14px 32px;
-  background: linear-gradient(135deg, var(--emerald), #00a87a);
-  border: none;
-  border-radius: var(--radius);
-  color: #000;
-  font-family: var(--font);
-  font-weight: 700;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: var(--shadow-emerald);
-  white-space: nowrap;
-}
-.btn-check:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(0,200,150,0.3); }
-.btn-check:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
-.btn-clear {
-  padding: 14px 20px;
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  color: var(--text3);
-  font-family: var(--font);
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.btn-clear:hover { border-color: var(--red); color: var(--red); }
-
-/* ===== LOADING ===== */
-.loading-state {
-  padding: 48px 24px;
-  text-align: center;
-  display: none;
-}
-.loading-state.visible { display: block; }
-.loading-dots { display: flex; justify-content: center; gap: 6px; margin-bottom: 16px; }
-.loading-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: var(--emerald);
-  animation: dotPulse 1.4s ease-in-out infinite;
-}
-.loading-dot:nth-child(2) { animation-delay: 0.2s; }
-.loading-dot:nth-child(3) { animation-delay: 0.4s; }
-@keyframes dotPulse {
-  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
-  40% { transform: scale(1); opacity: 1; }
-}
-.loading-text { color: var(--text2); font-size: 0.9rem; }
-
-/* ===== RESULTS ===== */
-.results-area { display: none; }
-.results-area.visible { display: block; }
-
-.results-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  margin-bottom: 16px;
-  box-shadow: var(--shadow);
-}
-
-.results-header {
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-.results-title {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--text);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.results-title-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-}
-
-.copy-btn {
-  padding: 6px 14px;
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  color: var(--text2);
-  font-family: var(--font);
-  font-size: 0.72rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.copy-btn:hover { border-color: var(--emerald); color: var(--emerald); }
-
-.results-body {
-  padding: 20px 24px;
-  font-size: 0.95rem;
-  line-height: 1.8;
-  color: var(--text);
-}
-
-/* Comparison view */
-.comparison-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-@media (max-width: 640px) { .comparison-grid { grid-template-columns: 1fr; } }
-
-.comparison-box {
-  background: var(--bg3);
-  border-radius: var(--radius);
-  padding: 16px;
-  border: 1px solid var(--border);
-}
-.comparison-label {
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-bottom: 10px;
-}
-.comparison-label.before { color: var(--red); }
-.comparison-label.after { color: var(--emerald); }
-.comparison-text { font-size: 0.88rem; line-height: 1.7; color: var(--text2); }
-
-/* Corrections list */
-.correction-item {
-  display: flex;
-  gap: 12px;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 0.85rem;
-}
-.correction-item:last-child { border-bottom: none; }
-.correction-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
-.correction-content {}
-.correction-original { color: var(--red); font-weight: 600; margin-bottom: 2px; text-decoration: line-through; }
-.correction-fixed { color: var(--emerald); font-weight: 600; margin-bottom: 4px; }
-.correction-reason { color: var(--text2); font-size: 0.78rem; line-height: 1.5; }
-
-/* Vocab enhancer */
-.vocab-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 0.85rem;
-}
-.vocab-item:last-child { border-bottom: none; }
-.vocab-weak { color: var(--text3); text-decoration: line-through; min-width: 80px; }
-.vocab-arrow { color: var(--text3); }
-.vocab-strong { color: var(--emerald2); font-weight: 600; }
-.vocab-reason { color: var(--text3); font-size: 0.75rem; margin-left: auto; }
-
-/* Locked overlay */
-.locked-overlay {
+/* PRO LOCK */
+.pro-lock {
   position: relative;
 }
-.locked-overlay::after {
-  content: '⚡ Pro Feature — Upgrade to unlock';
-  position: absolute;
-  inset: 0;
-  background: rgba(14,15,19,0.85);
-  backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--emerald);
-  border-radius: var(--radius-lg);
-  cursor: pointer;
+.pro-lock-overlay {
+  position: absolute; inset: 0;
+  background: rgba(14,15,19,0.88);
+  backdrop-filter: blur(3px);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 12px;
+  border-radius: var(--radius-lg); cursor: pointer; z-index: 10;
 }
+.pro-lock-text { font-size: 0.85rem; font-weight: 700; color: var(--emerald); }
+.pro-lock-btn {
+  padding: 10px 20px; background: var(--emerald-dim);
+  border: 1px solid var(--emerald); border-radius: var(--radius);
+  color: var(--emerald); font-family: var(--font); font-size: 0.78rem;
+  font-weight: 700; cursor: pointer; transition: all 0.2s;
+}
+.pro-lock-btn:hover { background: var(--emerald); color: #000; }
 
-/* ===== FEATURES ===== */
-.features-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 12px;
-  margin-top: 40px;
+/* MISTAKE CARDS */
+.mistake-grid { display: flex; flex-direction: column; gap: 12px; }
+.mistake-card {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px 18px;
+  border-left: 3px solid var(--emerald);
 }
-.feature-chip {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 18px 16px;
+.mistake-title { font-size: 0.85rem; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+.mistake-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 6px; font-size: 0.82rem; }
+.mistake-wrong { color: var(--red); text-decoration: line-through; }
+.mistake-right { color: var(--emerald); }
+.mistake-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text3); min-width: 40px; padding-top: 1px; }
+.mistake-tip { font-size: 0.78rem; color: var(--text3); margin-top: 8px; line-height: 1.5; border-top: 1px solid var(--border); padding-top: 8px; }
+
+/* WORD UPGRADER */
+.word-search {
+  width: 100%; padding: 12px 16px; background: var(--bg3);
+  border: 1.5px solid var(--border); border-radius: var(--radius);
+  color: var(--text); font-family: var(--font); font-size: 0.9rem;
+  outline: none; transition: border-color 0.2s; margin-bottom: 16px;
+}
+.word-search:focus { border-color: var(--emerald); }
+.word-search::placeholder { color: var(--text3); }
+
+.word-grid { display: flex; flex-direction: column; gap: 8px; }
+.word-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px; background: var(--bg3);
+  border: 1px solid var(--border); border-radius: var(--radius);
   transition: all 0.2s;
+}
+.word-row:hover { border-color: var(--emerald); }
+.word-weak { color: var(--text3); font-size: 0.85rem; min-width: 100px; text-decoration: line-through; }
+.word-arrow { color: var(--emerald); font-size: 0.8rem; }
+.word-strong { color: var(--emerald2); font-weight: 700; font-size: 0.85rem; flex: 1; }
+.word-reason { font-size: 0.72rem; color: var(--text3); }
+
+/* CHECKLIST */
+.checklist { display: flex; flex-direction: column; gap: 8px; }
+.check-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 14px 16px; background: var(--bg3);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  cursor: pointer; transition: all 0.2s;
+}
+.check-item.checked { border-color: var(--emerald); background: var(--emerald-dim); }
+.check-box {
+  width: 20px; height: 20px; border-radius: 6px;
+  border: 2px solid var(--border); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; transition: all 0.2s; margin-top: 1px;
+}
+.check-item.checked .check-box { background: var(--emerald); border-color: var(--emerald); color: #000; }
+.check-content {}
+.check-title { font-size: 0.85rem; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+.check-desc { font-size: 0.75rem; color: var(--text3); line-height: 1.5; }
+.check-progress {
+  text-align: center; padding: 16px;
+  font-size: 0.85rem; color: var(--text3);
+  border-top: 1px solid var(--border); margin-top: 8px;
+}
+.check-progress span { color: var(--emerald); font-weight: 700; }
+
+/* TONE GUIDE */
+.tone-tabs { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
+.tone-tab {
+  padding: 8px 18px; border-radius: 8px; border: 1px solid var(--border);
+  background: transparent; color: var(--text3); font-family: var(--font);
+  font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+}
+.tone-tab.active { background: var(--emerald-dim); border-color: var(--emerald); color: var(--emerald); }
+.tone-content { display: none; }
+.tone-content.active { display: block; }
+.tone-example {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px 18px; margin-bottom: 12px;
+}
+.tone-example-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; }
+.tone-example-text { font-size: 0.88rem; color: var(--text); line-height: 1.7; }
+.tone-tip { font-size: 0.8rem; color: var(--text3); line-height: 1.6; padding: 12px 0; }
+.tone-rule {
+  display: flex; gap: 10px; padding: 10px 0;
+  border-bottom: 1px solid var(--border); font-size: 0.82rem; color: var(--text2);
+}
+.tone-rule:last-child { border-bottom: none; }
+.tone-rule-icon { color: var(--emerald); flex-shrink: 0; }
+
+/* GRAMMAR RULES */
+.rules-grid { display: flex; flex-direction: column; gap: 12px; }
+.rule-card {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px 20px;
+  border-left: 3px solid var(--blue);
+}
+.rule-title { font-size: 0.88rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.rule-desc { font-size: 0.8rem; color: var(--text2); line-height: 1.6; margin-bottom: 10px; }
+.rule-examples { display: flex; flex-direction: column; gap: 6px; }
+.rule-ex { font-size: 0.78rem; padding: 6px 10px; border-radius: 6px; }
+.rule-ex.wrong { background: var(--red-dim); color: var(--red); }
+.rule-ex.right { background: var(--emerald-dim); color: var(--emerald2); }
+
+/* EMAIL TEMPLATES */
+.template-tabs { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
+.template-tab {
+  padding: 7px 14px; border-radius: 8px; border: 1px solid var(--border);
+  background: transparent; color: var(--text3); font-family: var(--font);
+  font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+}
+.template-tab.active { background: var(--emerald-dim); border-color: var(--emerald); color: var(--emerald); }
+.template-content { display: none; }
+.template-content.active { display: block; }
+.email-box {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px 22px;
+  font-size: 0.85rem; color: var(--text2); line-height: 1.9;
+  white-space: pre-wrap; font-family: var(--font);
+  position: relative;
+}
+.email-subject { font-size: 0.75rem; font-weight: 700; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+.email-copy-btn {
+  position: absolute; top: 14px; right: 14px;
+  padding: 5px 12px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 6px;
+  color: var(--text3); font-family: var(--font); font-size: 0.7rem;
+  font-weight: 600; cursor: pointer; transition: all 0.2s;
+}
+.email-copy-btn:hover { border-color: var(--emerald); color: var(--emerald); }
+
+/* FEATURES GRID */
+.features-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 36px; }
+.feature-chip {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px 16px; transition: all 0.2s;
 }
 .feature-chip:hover { border-color: var(--emerald); box-shadow: var(--shadow-emerald); }
 .feature-chip-icon { font-size: 1.5rem; margin-bottom: 8px; }
 .feature-chip-name { font-weight: 700; font-size: 0.88rem; color: var(--text); margin-bottom: 3px; }
 .feature-chip-desc { font-size: 0.75rem; color: var(--text3); line-height: 1.4; }
 
-/* ===== MODAL ===== */
+/* MODAL */
 .modal-overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.8);
-  backdrop-filter: blur(8px);
-  z-index: 10000;
+  position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(8px); z-index: 10000;
   display: flex; align-items: center; justify-content: center;
-  padding: 20px;
-  animation: fadeIn 0.2s ease;
+  padding: 20px; animation: fadeIn 0.2s ease;
 }
 .modal-overlay.hidden { display: none; }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
 .modal-box {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 40px 32px;
-  max-width: 420px;
-  width: 100%;
-  text-align: center;
-  box-shadow: var(--shadow-lg);
-  position: relative;
-  overflow: hidden;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 40px 32px;
+  max-width: 420px; width: 100%; text-align: center;
+  box-shadow: var(--shadow-lg); position: relative; overflow: hidden;
 }
 .modal-box::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
   background: linear-gradient(90deg, var(--emerald), var(--blue), var(--emerald));
 }
-.modal-glow {
-  position: absolute;
-  top: -60px; left: 50%; transform: translateX(-50%);
-  width: 200px; height: 200px;
-  background: radial-gradient(circle, var(--emerald-glow), transparent 70%);
-  pointer-events: none;
-}
-.modal-icon { font-size: 2.5rem; margin-bottom: 12px; position: relative; }
-.modal-title {
-  font-family: var(--font-serif);
-  font-size: 1.6rem;
-  color: var(--text);
-  margin-bottom: 8px;
-  position: relative;
-}
-.modal-desc { font-size: 0.88rem; color: var(--text2); line-height: 1.7; margin-bottom: 20px; position: relative; }
-.modal-price {
-  font-family: var(--font-serif);
-  font-size: 2.8rem;
-  color: var(--emerald);
-  line-height: 1;
-  margin-bottom: 4px;
-  position: relative;
-}
+.modal-icon { font-size: 2.5rem; margin-bottom: 12px; }
+.modal-title { font-family: var(--font-serif); font-size: 1.6rem; color: var(--text); margin-bottom: 8px; }
+.modal-desc { font-size: 0.88rem; color: var(--text2); line-height: 1.7; margin-bottom: 20px; }
+.modal-price { font-family: var(--font-serif); font-size: 2.8rem; color: var(--emerald); line-height: 1; margin-bottom: 4px; }
 .modal-price-sub { font-size: 0.72rem; color: var(--text3); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; }
-.modal-features {
-  text-align: left;
-  background: var(--bg3);
-  border-radius: var(--radius);
-  padding: 14px 16px;
-  margin-bottom: 20px;
-  position: relative;
-}
-.modal-feature {
-  display: flex; align-items: center; gap: 10px;
-  padding: 7px 0;
-  font-size: 0.83rem; color: var(--text2);
-  border-bottom: 1px solid var(--border);
-}
+.modal-features { text-align: left; background: var(--bg3); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 20px; }
+.modal-feature { display: flex; align-items: center; gap: 10px; padding: 7px 0; font-size: 0.83rem; color: var(--text2); border-bottom: 1px solid var(--border); }
 .modal-feature:last-child { border-bottom: none; }
-.modal-feature .chk { color: var(--emerald); font-size: 0.9rem; }
-
+.modal-feature .chk { color: var(--emerald); }
 .btn-buy {
-  width: 100%; padding: 16px;
-  background: linear-gradient(135deg, var(--emerald), #00a87a);
-  border: none; border-radius: var(--radius);
-  color: #000; font-family: var(--font);
-  font-weight: 800; font-size: 0.95rem;
-  cursor: pointer; transition: all 0.2s;
-  margin-bottom: 12px;
-  box-shadow: var(--shadow-emerald);
-  position: relative;
+  width: 100%; padding: 16px; background: linear-gradient(135deg, var(--emerald), #00a87a);
+  border: none; border-radius: var(--radius); color: #000; font-family: var(--font);
+  font-weight: 800; font-size: 0.95rem; cursor: pointer; transition: all 0.2s;
+  margin-bottom: 12px; box-shadow: var(--shadow-emerald);
 }
 .btn-buy:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(0,200,150,0.35); }
-
-.unlock-row { display: flex; gap: 8px; margin-bottom: 12px; position: relative; }
+.unlock-row { display: flex; gap: 8px; margin-bottom: 12px; }
 .unlock-input {
-  flex: 1; padding: 11px 14px;
-  background: var(--bg3);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  color: var(--text); font-family: var(--font);
-  font-size: 0.82rem; letter-spacing: 2px;
-  text-align: center; text-transform: uppercase;
-  outline: none; transition: border-color 0.2s;
+  flex: 1; padding: 11px 14px; background: var(--bg3);
+  border: 1.5px solid var(--border); border-radius: var(--radius);
+  color: var(--text); font-family: var(--font); font-size: 0.82rem;
+  letter-spacing: 2px; text-align: center; text-transform: uppercase; outline: none;
 }
 .unlock-input:focus { border-color: var(--emerald); }
 .btn-redeem {
-  padding: 11px 14px;
-  background: var(--bg3);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  color: var(--text2); font-family: var(--font);
+  padding: 11px 14px; background: var(--bg3); border: 1.5px solid var(--border);
+  border-radius: var(--radius); color: var(--text2); font-family: var(--font);
   font-size: 0.78rem; cursor: pointer; transition: all 0.2s;
 }
 .btn-redeem:hover { border-color: var(--emerald); color: var(--emerald); }
-.modal-close {
-  background: none; border: none;
-  color: var(--text3); font-family: var(--font);
-  font-size: 0.78rem; cursor: pointer;
-  text-decoration: underline; padding: 8px;
-  position: relative;
-}
+.modal-close { background: none; border: none; color: var(--text3); font-family: var(--font); font-size: 0.78rem; cursor: pointer; text-decoration: underline; padding: 8px; }
 
-/* Share modal */
+/* SHARE MODAL */
 .share-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
-.share-btn {
-  padding: 14px 10px;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  background: var(--bg3);
-  color: var(--text2); font-family: var(--font);
-  font-size: 0.78rem; font-weight: 600;
-  cursor: pointer; transition: all 0.2s;
-  display: flex; flex-direction: column;
-  align-items: center; gap: 6px;
-  text-decoration: none;
-}
+.share-btn { padding: 14px 10px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--bg3); color: var(--text2); font-family: var(--font); font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none; }
 .share-btn:hover { border-color: var(--emerald); color: var(--emerald); }
 .share-icon { font-size: 1.4rem; }
 
-/* Toast */
-#toast-container {
-  position: fixed; bottom: 24px; left: 50%;
-  transform: translateX(-50%);
-  z-index: 99999; display: flex;
-  flex-direction: column; gap: 8px;
-  pointer-events: none;
-}
-.toast {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px; padding: 12px 20px;
-  font-size: 0.85rem; color: var(--text);
-  box-shadow: var(--shadow-lg);
-  animation: toastIn 0.3s ease;
-  white-space: nowrap;
-}
+/* TOAST */
+#toast-container { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 99999; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+.toast { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 20px; font-size: 0.85rem; color: var(--text); box-shadow: var(--shadow-lg); animation: toastIn 0.3s ease; white-space: nowrap; }
 @keyframes toastIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
@@ -641,39 +377,36 @@ textarea#main-input::placeholder { color: var(--text3); }
 
 <div id="toast-container"></div>
 
-<!-- ===== PREMIUM MODAL ===== -->
+<!-- PREMIUM MODAL -->
 <div class="modal-overlay hidden" id="premium-modal">
   <div class="modal-box">
-    <div class="modal-glow"></div>
     <div class="modal-icon">⚡</div>
     <div class="modal-title">Upgrade to Pro</div>
-    <div class="modal-desc">Unlock unlimited checks, all tones, AI explanations and more.</div>
-    <div class="modal-price">$3.99</div>
+    <div class="modal-desc">Unlock the full GrammarCoach experience — everything you need to write like a professional.</div>
+    <div class="modal-price">$2.99</div>
     <div class="modal-price-sub">ONE-TIME — YOURS FOREVER</div>
     <div class="modal-features">
-      <div class="modal-feature"><span class="chk">✓</span> Unlimited word count</div>
-      <div class="modal-feature"><span class="chk">✓</span> Unlimited daily checks</div>
-      <div class="modal-feature"><span class="chk">✓</span> All 3 tones — Professional, Casual, Academic</div>
-      <div class="modal-feature"><span class="chk">✓</span> AI explains every correction</div>
-      <div class="modal-feature"><span class="chk">✓</span> Before/after comparison view</div>
-      <div class="modal-feature"><span class="chk">✓</span> Vocabulary enhancer</div>
+      <div class="modal-feature"><span class="chk">✓</span> Full Word Upgrader (100+ words)</div>
+      <div class="modal-feature"><span class="chk">✓</span> Tone Guide — Professional, Casual, Academic</div>
+      <div class="modal-feature"><span class="chk">✓</span> Advanced Grammar Rules</div>
+      <div class="modal-feature"><span class="chk">✓</span> Ready-to-use Email Templates</div>
     </div>
     <div class="unlock-row">
       <input class="unlock-input" type="text" id="unlock-input" placeholder="HAVE A CODE?" maxlength="20">
       <button class="btn-redeem" onclick="redeemCode()">Redeem</button>
     </div>
-    <button class="btn-buy" onclick="handleUpgrade()">⚡ Unlock Pro — $3.99</button>
+    <button class="btn-buy" onclick="handleUpgrade()">⚡ Unlock Pro — $2.99</button>
     <br>
     <button class="modal-close" onclick="closeModal('premium-modal')">Maybe later</button>
   </div>
 </div>
 
-<!-- ===== SHARE MODAL ===== -->
+<!-- SHARE MODAL -->
 <div class="modal-overlay hidden" id="share-modal">
   <div class="modal-box">
     <div class="modal-icon">🚀</div>
     <div class="modal-title">Share GrammarCoach</div>
-    <div class="modal-desc">Know someone who wants to write better? Share this free tool!</div>
+    <div class="modal-desc">Help someone write better — share this free guide!</div>
     <div class="share-grid">
       <a class="share-btn" id="share-whatsapp" href="#" target="_blank"><span class="share-icon">💬</span>WhatsApp</a>
       <a class="share-btn" id="share-twitter" href="#" target="_blank"><span class="share-icon">🐦</span>Twitter / X</a>
@@ -692,516 +425,555 @@ textarea#main-input::placeholder { color: var(--text3); }
     </div>
     <div class="header-right">
       <span class="pro-badge" id="pro-badge">PRO ✓</span>
-      <button class="btn-upgrade" id="upgrade-btn" onclick="openPremiumModal()">⚡ Upgrade — $3.99</button>
+      <button class="btn-upgrade" id="upgrade-btn" onclick="openPremiumModal()">⚡ Upgrade — $2.99</button>
       <button class="btn-ghost" onclick="openShareModal()">📤 Share</button>
     </div>
   </header>
 
-  <!-- Hero -->
-  <div class="hero">
-    <div class="hero-eyebrow">✦ AI-Powered Writing Coach</div>
-    <h1 class="hero-title">Write <em>smarter.</em><br>Sound <em>professional.</em></h1>
-    <p class="hero-sub">Paste any text — emails, essays, messages — and get instant AI-powered grammar fixes, rewrites, and improvement tips.</p>
+  <nav class="nav-tabs">
+    <button class="nav-tab active" onclick="showSection('home')">🏠 Home</button>
+    <button class="nav-tab" onclick="showSection('mistakes')">❌ Common Mistakes</button>
+    <button class="nav-tab" onclick="showSection('words')">💬 Word Upgrader</button>
+    <button class="nav-tab" onclick="showSection('checklist')">✅ Checklist</button>
+    <button class="nav-tab" onclick="showSection('tone')">🎯 Tone Guide</button>
+    <button class="nav-tab" onclick="showSection('rules')">📖 Grammar Rules</button>
+    <button class="nav-tab" onclick="showSection('emails')">📧 Email Templates</button>
+  </nav>
 
-    <div class="usage-bar-wrap">
-      <div class="usage-pill">
-        <div class="usage-dot" id="checks-dot"></div>
-        <span id="checks-label">5 checks remaining today</span>
+  <!-- HOME -->
+  <div class="section active" id="section-home">
+    <div class="hero">
+      <div class="hero-eyebrow">✦ English Writing Guide</div>
+      <h1 class="hero-title">Write <em>smarter.</em><br>Sound <em>professional.</em></h1>
+      <p class="hero-sub">Your complete guide to writing better English — fix mistakes, upgrade your vocabulary, and nail the right tone every time.</p>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="hero-stat-num">20+</div><div class="hero-stat-label">Common Mistakes</div></div>
+        <div class="hero-stat"><div class="hero-stat-num">100+</div><div class="hero-stat-label">Word Upgrades</div></div>
+        <div class="hero-stat"><div class="hero-stat-num">3</div><div class="hero-stat-label">Writing Tones</div></div>
+        <div class="hero-stat"><div class="hero-stat-num">10+</div><div class="hero-stat-label">Email Templates</div></div>
       </div>
-      <div class="usage-pill">
-        <div class="usage-dot" id="words-dot"></div>
-        <span>300 words free · Unlimited with Pro</span>
+      <button class="btn-upgrade" style="padding:14px 32px;font-size:0.95rem" onclick="showSection('mistakes')">Start Learning →</button>
+    </div>
+    <div class="features-grid">
+      <div class="feature-chip"><div class="feature-chip-icon">❌</div><div class="feature-chip-name">Common Mistakes</div><div class="feature-chip-desc">The 20 most common English mistakes and how to fix them</div></div>
+      <div class="feature-chip"><div class="feature-chip-icon">💬</div><div class="feature-chip-name">Word Upgrader</div><div class="feature-chip-desc">Replace weak words with powerful professional alternatives</div></div>
+      <div class="feature-chip"><div class="feature-chip-icon">✅</div><div class="feature-chip-name">Writing Checklist</div><div class="feature-chip-desc">10-point checklist before you send any important message</div></div>
+      <div class="feature-chip"><div class="feature-chip-icon">🎯</div><div class="feature-chip-name">Tone Guide ⚡</div><div class="feature-chip-desc">Learn Professional, Casual, and Academic writing styles</div></div>
+      <div class="feature-chip"><div class="feature-chip-icon">📖</div><div class="feature-chip-name">Grammar Rules ⚡</div><div class="feature-chip-desc">Advanced grammar rules explained simply with examples</div></div>
+      <div class="feature-chip"><div class="feature-chip-icon">📧</div><div class="feature-chip-name">Email Templates ⚡</div><div class="feature-chip-desc">Ready-to-use templates for every professional situation</div></div>
+    </div>
+  </div>
+
+  <!-- COMMON MISTAKES -->
+  <div class="section" id="section-mistakes">
+    <div class="section-title">Common <span>Mistakes</span></div>
+    <div class="section-sub">The 20 most common English grammar mistakes — and exactly how to fix them</div>
+    <div class="mistake-grid">
+      <div class="mistake-card">
+        <div class="mistake-title">1. Using "I" incorrectly</div>
+        <div class="mistake-row"><span class="mistake-label">Wrong</span><span class="mistake-wrong">Me and John went to the store.</span></div>
+        <div class="mistake-row"><span class="mistake-label">Right</span><span class="mistake-right">John and I went to the store.</span></div>
+        <div class="mistake-tip">💡 Remove the other person — "Me went to the store" sounds wrong, so use "I".</div>
+      </div>
+      <div class="mistake-card">
+        <div class="mistake-title">2. Your vs You're</div>
+        <div class="mistake-row"><span class="mistake-label">Wrong</span><span class="mistake-wrong">Your going to love this.</span></div>
+        <div class="mistake-row"><span class="mistake-label">Right</span><span class="mistake-right">You're going to love this.</span></div>
+        <div class="mistake-tip">💡 "You're" = "you are". If you can replace it with "you are", use you're.</div>
+      </div>
+      <div class="mistake-card">
+        <div class="mistake-title">3. There / Their / They're</div>
+        <div class="mistake-row"><span class="mistake-label">Wrong</span><span class="mistake-wrong">Their going to there house.</span></div>
+        <div class="mistake-row"><span class="mistake-label">Right</span><span class="mistake-right">They're going to their house.</span></div>
+        <div class="mistake-tip">💡 There = place. Their = belonging. They're = they are.</div>
+      </div>
+      <div class="mistake-card">
+        <div class="mistake-title">4. Its vs It's</div>
+        <div class="mistake-row"><span class="mistake-label">Wrong</span><span class="mistake-wrong">The dog wagged it's tail.</span></div>
+        <div class="mistake-row"><span class="mistake-label">Right</span><span class="mistake-right">The dog wagged its tail.</span></div>
+        <div class="mistake-tip">💡 "It's" = "it is". "Its" shows ownership. No apostrophe for possession.</div>
+      </div>
+      <div class="mistake-card">
+        <div class="mistake-title">5. Then vs Than</div>
+        <div class="mistake-row"><span class="mistake-label">Wrong</span><span class="mistake-wrong">She is taller then me.</span></div>
+        <div class="mistake-row"><span class="mistake-label">Right</span><span class="mistake-right">She is taller than me.</span></div>
+        <div class="mistake-tip">💡 "Than" = comparison. "Then" = time sequence.</div>
+      </div>
+      <div class="mistake-card">
+        <div class="mistake-title">6. Affect vs Effect</div>
+        <div class="mistake-row"><span class="mistake-label">Wrong</span><span class="mistake-wrong">The weather effected my mood.</span></div>
+        <div class="mistake-row"><span class="mistake-label">Right</span><span class="mistake-right">The weather affected my mood.</span></div>
+        <div class="mistake-tip">💡 "Affect" is a verb (action). "Effect" is a noun (result).</div>
+      </div>
+      <div class="mistake-card">
+        <div class="mistake-title">7. Could of / Should of</div>
+        <div class="mistake-row"><span class="mistake-label">Wrong</span><span class="mistake-wrong">I should of called you earlier.</span></div>
+        <div class="mistake-row"><span class="mistake-label">Right</span><span class="mistake-right">I should have called you earlier.</span></div>
+        <div class="mistake-tip">💡 Always "could have / should have / would have" — never "of".</div>
+      </div>
+      <div class="mistake-card">
+        <div class="mistake-title">8. Loose vs Lose</div>
+        <div class="mistake-row"><span class="mistake-label">Wrong</span><span class="mistake-wrong">I always loose my keys.</span></div>
+        <div class="mistake-row"><span class="mistake-label">Right</span><span class="mistake-right">I always lose my keys.</span></div>
+        <div class="mistake-tip">💡 "Lose" = to misplace something. "Loose" = not tight.</div>
+      </div>
+      <div class="mistake-card">
+        <div class="mistake-title">9. Apostrophes in plurals</div>
+        <div class="mistake-row"><span class="mistake-label">Wrong</span><span class="mistake-wrong">The cat's are sleeping.</span></div>
+        <div class="mistake-row"><span class="mistake-label">Right</span><span class="mistake-right">The cats are sleeping.</span></div>
+        <div class="mistake-tip">💡 Never use an apostrophe to make a word plural.</div>
+      </div>
+      <div class="mistake-card">
+        <div class="mistake-title">10. Double negatives</div>
+        <div class="mistake-row"><span class="mistake-label">Wrong</span><span class="mistake-wrong">I don't know nothing about it.</span></div>
+        <div class="mistake-row"><span class="mistake-label">Right</span><span class="mistake-right">I don't know anything about it.</span></div>
+        <div class="mistake-tip">💡 Two negatives cancel out and create a positive meaning.</div>
+      </div>
+      <div class="mistake-card">
+        <div class="mistake-title">11. Subject-verb agreement</div>
+        <div class="mistake-row"><span class="mistake-label">Wrong</span><span class="mistake-wrong">The team are playing well.</span></div>
+        <div class="mistake-row"><span class="mistake-label">Right</span><span class="mistake-right">The team is playing well.</span></div>
+        <div class="mistake-tip">💡 A group noun takes a singular verb — "team", "staff", "group" are singular.</div>
+      </div>
+      <div class="mistake-card">
+        <div class="mistake-title">12. Unnecessary "very"</div>
+        <div class="mistake-row"><span class="mistake-label">Weak</span><span class="mistake-wrong">She was very tired.</span></div>
+        <div class="mistake-row"><span class="mistake-label">Strong</span><span class="mistake-right">She was exhausted.</span></div>
+        <div class="mistake-tip">💡 Instead of "very + adjective" use a single stronger word.</div>
+      </div>
+      <div class="mistake-card">
+        <div class="mistake-title">13. Starting with "Because"</div>
+        <div class="mistake-row"><span class="mistake-label">Wrong</span><span class="mistake-wrong">Because I was late. I missed the bus.</span></div>
+        <div class="mistake-row"><span class="mistake-label">Right</span><span class="mistake-right">Because I was late, I missed the bus.</span></div>
+        <div class="mistake-tip">💡 "Because" clauses need to connect to a main sentence — don't leave them alone.</div>
+      </div>
+      <div class="mistake-card">
+        <div class="mistake-title">14. Fewer vs Less</div>
+        <div class="mistake-row"><span class="mistake-label">Wrong</span><span class="mistake-wrong">There are less people here today.</span></div>
+        <div class="mistake-row"><span class="mistake-label">Right</span><span class="mistake-right">There are fewer people here today.</span></div>
+        <div class="mistake-tip">💡 "Fewer" for things you can count. "Less" for things you can't count.</div>
+      </div>
+      <div class="mistake-card">
+        <div class="mistake-title">15. Who vs Whom</div>
+        <div class="mistake-row"><span class="mistake-label">Wrong</span><span class="mistake-wrong">Whom is calling?</span></div>
+        <div class="mistake-row"><span class="mistake-label">Right</span><span class="mistake-right">Who is calling?</span></div>
+        <div class="mistake-tip">💡 Use "who" as subject (doing the action). "Whom" as object (receiving the action).</div>
+      </div>
+      <div class="mistake-card">
+        <div class="mistake-title">16. Passive vs Active voice</div>
+        <div class="mistake-row"><span class="mistake-label">Passive</span><span class="mistake-wrong">The report was written by me.</span></div>
+        <div class="mistake-row"><span class="mistake-label">Active</span><span class="mistake-right">I wrote the report.</span></div>
+        <div class="mistake-tip">💡 Active voice is shorter, stronger, and clearer. Use it whenever possible.</div>
+      </div>
+      <div class="mistake-card">
+        <div class="mistake-title">17. Comma splice</div>
+        <div class="mistake-row"><span class="mistake-label">Wrong</span><span class="mistake-wrong">I love writing, it is my passion.</span></div>
+        <div class="mistake-row"><span class="mistake-label">Right</span><span class="mistake-right">I love writing. It is my passion.</span></div>
+        <div class="mistake-tip">💡 Don't join two complete sentences with just a comma. Use a period or semicolon.</div>
+      </div>
+      <div class="mistake-card">
+        <div class="mistake-title">18. Redundant phrases</div>
+        <div class="mistake-row"><span class="mistake-label">Redundant</span><span class="mistake-wrong">Please revert back to me.</span></div>
+        <div class="mistake-row"><span class="mistake-label">Clean</span><span class="mistake-right">Please revert to me.</span></div>
+        <div class="mistake-tip">💡 "Revert" already means going back. Common redundancies: "end result", "past history", "future plans".</div>
+      </div>
+      <div class="mistake-card">
+        <div class="mistake-title">19. Mixing tenses</div>
+        <div class="mistake-row"><span class="mistake-label">Wrong</span><span class="mistake-wrong">She walked in and sits down.</span></div>
+        <div class="mistake-row"><span class="mistake-label">Right</span><span class="mistake-right">She walked in and sat down.</span></div>
+        <div class="mistake-tip">💡 Keep the same tense throughout your sentence and paragraph.</div>
+      </div>
+      <div class="mistake-card">
+        <div class="mistake-title">20. "I" capitalization</div>
+        <div class="mistake-row"><span class="mistake-label">Wrong</span><span class="mistake-wrong">Yesterday i went to the store.</span></div>
+        <div class="mistake-row"><span class="mistake-label">Right</span><span class="mistake-right">Yesterday I went to the store.</span></div>
+        <div class="mistake-tip">💡 "I" is always capitalized in English, no matter where it appears.</div>
       </div>
     </div>
   </div>
 
-  <!-- Main Input Card -->
-  <div class="main-card">
-    <div class="card-toolbar">
-      <div style="display:flex;align-items:center;gap:8px">
-        <span style="font-size:0.72rem;color:var(--text3);font-weight:600;letter-spacing:1px;text-transform:uppercase;">Tone</span>
-        <div class="tone-selector">
-          <button class="tone-btn active" id="tone-professional" onclick="selectTone('professional')">Professional</button>
-          <button class="tone-btn locked" id="tone-casual" onclick="requireProTone('casual')">Casual</button>
-          <button class="tone-btn locked" id="tone-academic" onclick="requireProTone('academic')">Academic</button>
+  <!-- WORD UPGRADER -->
+  <div class="section" id="section-words">
+    <div class="section-title">Word <span>Upgrader</span></div>
+    <div class="section-sub">Replace weak, overused words with powerful professional alternatives</div>
+    <input class="word-search" type="text" id="word-search" placeholder="Search a word..." oninput="filterWords()">
+    <div class="word-grid" id="word-grid"></div>
+
+    <!-- PRO section -->
+    <div style="margin-top:24px;position:relative" id="pro-words-section">
+      <div class="card-header" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg) var(--radius-lg) 0 0;border-bottom:none">
+        <div class="card-title">
+          💎 Advanced Word Upgrades
+          <span style="font-size:0.65rem;background:var(--emerald-dim);border:1px solid var(--emerald);color:var(--emerald);padding:2px 8px;border-radius:4px;letter-spacing:1px;font-weight:800;">PRO</span>
         </div>
       </div>
-      <div class="word-count" id="word-count">0 / 300 words</div>
-    </div>
-
-    <div class="input-area">
-      <textarea id="main-input" placeholder="Paste or type your text here...&#10;&#10;Example: &quot;i went to the store yesterday and buyed some milk, its was very cheap and me and my friend was happy about it&quot;" oninput="onInput()"></textarea>
-    </div>
-
-    <div class="loading-state" id="loading-state">
-      <div class="loading-dots">
-        <div class="loading-dot"></div>
-        <div class="loading-dot"></div>
-        <div class="loading-dot"></div>
-      </div>
-      <div class="loading-text">AI is analyzing your writing...</div>
-    </div>
-
-    <div class="input-footer">
-      <button class="btn-clear" onclick="clearAll()">✕ Clear</button>
-      <button class="btn-check" id="check-btn" onclick="checkGrammar()">✨ Check & Improve</button>
-    </div>
-  </div>
-
-  <!-- Results -->
-  <div class="results-area" id="results-area">
-
-    <!-- Rewritten text -->
-    <div class="results-card">
-      <div class="results-header">
-        <div class="results-title">
-          <div class="results-title-dot" style="background:var(--emerald)"></div>
-          Improved Version
-        </div>
-        <button class="copy-btn" onclick="copyResult('rewritten-text')">Copy</button>
-      </div>
-      <div class="results-body" id="rewritten-text"></div>
-    </div>
-
-    <!-- Before/After comparison — PRO -->
-    <div class="results-card" id="comparison-card">
-      <div class="results-header">
-        <div class="results-title">
-          <div class="results-title-dot" style="background:var(--blue)"></div>
-          Before / After Comparison
-          <span style="font-size:0.65rem;background:var(--emerald-dim);border:1px solid var(--emerald);color:var(--emerald);padding:2px 7px;border-radius:4px;letter-spacing:1px;font-weight:800;">PRO</span>
-        </div>
-      </div>
-      <div class="results-body" id="comparison-body">
-        <div class="comparison-grid">
-          <div class="comparison-box">
-            <div class="comparison-label before">Before</div>
-            <div class="comparison-text" id="before-text"></div>
+      <div style="position:relative;border:1px solid var(--border);border-radius:0 0 var(--radius-lg) var(--radius-lg);overflow:hidden">
+        <div style="padding:16px;filter:blur(4px);pointer-events:none">
+          <div class="word-grid">
+            <div class="word-row"><span class="word-weak">significant</span><span class="word-arrow">→</span><span class="word-strong">substantial / considerable</span><span class="word-reason">More precise</span></div>
+            <div class="word-row"><span class="word-weak">important</span><span class="word-arrow">→</span><span class="word-strong">critical / essential / pivotal</span><span class="word-reason">Stronger impact</span></div>
+            <div class="word-row"><span class="word-weak">problem</span><span class="word-arrow">→</span><span class="word-strong">challenge / obstacle / issue</span><span class="word-reason">More professional</span></div>
           </div>
-          <div class="comparison-box">
-            <div class="comparison-label after">After</div>
-            <div class="comparison-text" id="after-text"></div>
-          </div>
+        </div>
+        <div class="pro-lock-overlay" onclick="openPremiumModal()">
+          <div style="font-size:2rem">🔒</div>
+          <div class="pro-lock-text">80+ more word upgrades</div>
+          <div class="pro-lock-btn">Unlock Pro — $2.99</div>
         </div>
       </div>
     </div>
-
-    <!-- Corrections explained — PRO -->
-    <div class="results-card" id="corrections-card">
-      <div class="results-header">
-        <div class="results-title">
-          <div class="results-title-dot" style="background:var(--amber)"></div>
-          Corrections Explained
-          <span style="font-size:0.65rem;background:var(--emerald-dim);border:1px solid var(--emerald);color:var(--emerald);padding:2px 7px;border-radius:4px;letter-spacing:1px;font-weight:800;">PRO</span>
-        </div>
-      </div>
-      <div class="results-body" id="corrections-list"></div>
-    </div>
-
-    <!-- Vocabulary enhancer — PRO -->
-    <div class="results-card" id="vocab-card">
-      <div class="results-header">
-        <div class="results-title">
-          <div class="results-title-dot" style="background:var(--amber)"></div>
-          Vocabulary Enhancer
-          <span style="font-size:0.65rem;background:var(--emerald-dim);border:1px solid var(--emerald);color:var(--emerald);padding:2px 7px;border-radius:4px;letter-spacing:1px;font-weight:800;">PRO</span>
-        </div>
-      </div>
-      <div class="results-body" id="vocab-list"></div>
-    </div>
-
-    <div style="text-align:center;margin-top:8px">
-      <button class="btn-upgrade" onclick="openPremiumModal()" id="results-upgrade-btn" style="padding:12px 28px;font-size:0.85rem">⚡ Unlock all Pro features — $3.99</button>
-    </div>
-
   </div>
 
-  <!-- Features -->
-  <div class="features-row">
-    <div class="feature-chip">
-      <div class="feature-chip-icon">🔧</div>
-      <div class="feature-chip-name">Grammar Fix</div>
-      <div class="feature-chip-desc">Catches and fixes all grammar and spelling mistakes instantly</div>
-    </div>
-    <div class="feature-chip">
-      <div class="feature-chip-icon">✨</div>
-      <div class="feature-chip-name">AI Rewrite</div>
-      <div class="feature-chip-desc">Rewrites your text to sound polished and professional</div>
-    </div>
-    <div class="feature-chip">
-      <div class="feature-chip-icon">🎯</div>
-      <div class="feature-chip-name">3 Tones</div>
-      <div class="feature-chip-desc">Professional, Casual, and Academic — adapt to any situation</div>
-    </div>
-    <div class="feature-chip">
-      <div class="feature-chip-icon">📖</div>
-      <div class="feature-chip-name">Vocab Boost</div>
-      <div class="feature-chip-desc">Suggests stronger, more impressive words for your writing</div>
-    </div>
+  <!-- CHECKLIST -->
+  <div class="section" id="section-checklist">
+    <div class="section-title">Writing <span>Checklist</span></div>
+    <div class="section-sub">Before you send that important email or message — run through this checklist</div>
+    <div class="checklist" id="checklist"></div>
+    <div class="check-progress" id="check-progress"></div>
+  </div>
+
+  <!-- TONE GUIDE — PRO -->
+  <div class="section" id="section-tone">
+    <div class="section-title">Tone <span>Guide</span> <span style="font-size:0.6em;background:var(--emerald-dim);border:1px solid var(--emerald);color:var(--emerald);padding:2px 10px;border-radius:6px;letter-spacing:1px;font-weight:800;vertical-align:middle">PRO</span></div>
+    <div class="section-sub">Learn how to write in the right tone for every situation</div>
+    <div id="tone-section-content"></div>
+  </div>
+
+  <!-- GRAMMAR RULES — PRO -->
+  <div class="section" id="section-rules">
+    <div class="section-title">Grammar <span>Rules</span> <span style="font-size:0.6em;background:var(--emerald-dim);border:1px solid var(--emerald);color:var(--emerald);padding:2px 10px;border-radius:6px;letter-spacing:1px;font-weight:800;vertical-align:middle">PRO</span></div>
+    <div class="section-sub">Advanced grammar rules explained simply — with examples</div>
+    <div id="rules-section-content"></div>
+  </div>
+
+  <!-- EMAIL TEMPLATES — PRO -->
+  <div class="section" id="section-emails">
+    <div class="section-title">Email <span>Templates</span> <span style="font-size:0.6em;background:var(--emerald-dim);border:1px solid var(--emerald);color:var(--emerald);padding:2px 10px;border-radius:6px;letter-spacing:1px;font-weight:800;vertical-align:middle">PRO</span></div>
+    <div class="section-sub">Ready-to-use professional email templates for every situation</div>
+    <div id="emails-section-content"></div>
   </div>
 
 </div>
 
 <script>
-// ============================================================
-// CONFIG
-// ============================================================
 const OWNER_CODE = 'GRAMMARCOACH2024';
 const GUMROAD_LINK = 'https://shaheer62.gumroad.com/l/fnimi';
 const APP_URL = 'https://sheroo6211.github.io/GrammarCoach';
-const APP_MSG = 'Fix your grammar and write like a pro with GrammarCoach — free AI writing improver! ✍️';
-const FREE_WORD_LIMIT = 300;
-const FREE_DAILY_CHECKS = 5;
+const APP_MSG = 'Write better English with GrammarCoach — free grammar guide, word upgrader, and writing tips! ✍️';
 
-// ============================================================
-// STATE
-// ============================================================
 let state = { isPremium: false };
-let selectedTone = 'professional';
-let lastInput = '';
+let checklistState = {};
 
 function loadState() {
   try {
     const s = localStorage.getItem('gc_state');
     if (s) Object.assign(state, JSON.parse(s));
+    const c = localStorage.getItem('gc_checklist');
+    if (c) Object.assign(checklistState, JSON.parse(c));
   } catch(e) {}
 }
-
 function saveState() {
   localStorage.setItem('gc_state', JSON.stringify(state));
+  localStorage.setItem('gc_checklist', JSON.stringify(checklistState));
 }
 
-// Daily checks tracking
-function getTodayKey() {
-  return 'gc_checks_' + new Date().toISOString().split('T')[0];
-}
-function getChecksUsed() {
-  return parseInt(localStorage.getItem(getTodayKey()) || '0');
-}
-function incrementChecks() {
-  const key = getTodayKey();
-  localStorage.setItem(key, (getChecksUsed() + 1).toString());
-}
-function getChecksLeft() {
-  if (state.isPremium) return Infinity;
-  return Math.max(0, FREE_DAILY_CHECKS - getChecksUsed());
+// NAV
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('section-' + id).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t => {
+    if (t.textContent.toLowerCase().includes(id) || (id === 'home' && t.textContent.includes('Home'))) t.classList.add('active');
+  });
+
+  if (id === 'tone') renderToneSection();
+  if (id === 'rules') renderRulesSection();
+  if (id === 'emails') renderEmailsSection();
 }
 
-// ============================================================
-// UI UPDATES
-// ============================================================
-function updateUsageUI() {
-  const left = getChecksLeft();
-  const label = document.getElementById('checks-label');
-  const dot = document.getElementById('checks-dot');
+// WORD UPGRADER DATA
+const FREE_WORDS = [
+  { weak: 'good', strong: 'excellent / outstanding', reason: 'More impactful' },
+  { weak: 'bad', strong: 'inadequate / poor', reason: 'More precise' },
+  { weak: 'big', strong: 'substantial / significant', reason: 'More professional' },
+  { weak: 'small', strong: 'minimal / modest', reason: 'More formal' },
+  { weak: 'get', strong: 'obtain / acquire', reason: 'More professional' },
+  { weak: 'use', strong: 'utilize / employ', reason: 'More formal' },
+  { weak: 'show', strong: 'demonstrate / illustrate', reason: 'More impactful' },
+  { weak: 'help', strong: 'assist / support', reason: 'More professional' },
+  { weak: 'make', strong: 'create / develop', reason: 'More precise' },
+  { weak: 'need', strong: 'require / necessitate', reason: 'More formal' },
+  { weak: 'think', strong: 'believe / consider', reason: 'More confident' },
+  { weak: 'start', strong: 'initiate / commence', reason: 'More formal' },
+  { weak: 'end', strong: 'conclude / finalize', reason: 'More professional' },
+  { weak: 'tell', strong: 'inform / communicate', reason: 'More formal' },
+  { weak: 'ask', strong: 'inquire / request', reason: 'More polite' },
+  { weak: 'buy', strong: 'purchase / acquire', reason: 'More formal' },
+  { weak: 'send', strong: 'transmit / dispatch', reason: 'More professional' },
+  { weak: 'find', strong: 'identify / discover', reason: 'More precise' },
+  { weak: 'change', strong: 'modify / transform', reason: 'More specific' },
+  { weak: 'try', strong: 'attempt / endeavor', reason: 'More formal' },
+];
 
-  if (state.isPremium) {
-    label.textContent = 'Unlimited checks (Pro)';
-    dot.className = 'usage-dot';
-  } else {
-    label.textContent = `${left} check${left !== 1 ? 's' : ''} remaining today`;
-    dot.className = 'usage-dot' + (left <= 1 ? ' danger' : left <= 2 ? ' warn' : '');
+function renderWords(list) {
+  const el = document.getElementById('word-grid');
+  el.innerHTML = list.map(w => `
+    <div class="word-row">
+      <span class="word-weak">${w.weak}</span>
+      <span class="word-arrow">→</span>
+      <span class="word-strong">${w.strong}</span>
+      <span class="word-reason">${w.reason}</span>
+    </div>
+  `).join('');
+}
+
+function filterWords() {
+  const q = document.getElementById('word-search').value.toLowerCase();
+  const filtered = FREE_WORDS.filter(w => w.weak.includes(q) || w.strong.includes(q));
+  renderWords(filtered);
+}
+
+// CHECKLIST DATA
+const CHECKLIST_ITEMS = [
+  { id: 'spell', title: 'Check spelling', desc: 'Read through and fix any misspelled words' },
+  { id: 'caps', title: 'Check capitalization', desc: 'Names, "I", and sentence starts are capitalized' },
+  { id: 'punct', title: 'Check punctuation', desc: 'Periods, commas, and question marks are correct' },
+  { id: 'tone', title: 'Check tone', desc: 'Does the tone match the situation — formal or casual?' },
+  { id: 'clear', title: 'Is it clear?', desc: 'Would someone with no context understand your message?' },
+  { id: 'short', title: 'Keep it concise', desc: 'Remove unnecessary words — shorter is usually better' },
+  { id: 'greet', title: 'Proper greeting', desc: 'Does it start with an appropriate greeting?' },
+  { id: 'close', title: 'Proper closing', desc: 'Does it end with a clear closing and your name?' },
+  { id: 'subject', title: 'Subject is clear', desc: 'For emails — is the subject line specific and relevant?' },
+  { id: 'proofread', title: 'Read it out loud', desc: 'If it sounds odd when spoken, rewrite that part' },
+];
+
+function renderChecklist() {
+  const el = document.getElementById('checklist');
+  el.innerHTML = CHECKLIST_ITEMS.map(item => `
+    <div class="check-item ${checklistState[item.id] ? 'checked' : ''}" onclick="toggleCheck('${item.id}')">
+      <div class="check-box">${checklistState[item.id] ? '✓' : ''}</div>
+      <div class="check-content">
+        <div class="check-title">${item.title}</div>
+        <div class="check-desc">${item.desc}</div>
+      </div>
+    </div>
+  `).join('');
+  updateCheckProgress();
+}
+
+function toggleCheck(id) {
+  checklistState[id] = !checklistState[id];
+  saveState();
+  renderChecklist();
+}
+
+function updateCheckProgress() {
+  const done = Object.values(checklistState).filter(Boolean).length;
+  const total = CHECKLIST_ITEMS.length;
+  const el = document.getElementById('check-progress');
+  el.innerHTML = `<span>${done}</span> of ${total} checks done ${done === total ? '🎉 Ready to send!' : ''}`;
+}
+
+// TONE GUIDE (PRO)
+function renderToneSection() {
+  const el = document.getElementById('tone-section-content');
+  if (!state.isPremium) {
+    el.innerHTML = `
+      <div style="position:relative;border-radius:var(--radius-lg);overflow:hidden">
+        <div style="filter:blur(3px);pointer-events:none;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg)">
+          <div class="tone-tabs">
+            <button class="tone-tab active">Professional</button>
+            <button class="tone-tab">Casual</button>
+            <button class="tone-tab">Academic</button>
+          </div>
+          <div class="tone-example"><div class="tone-example-label">Example Email</div><div class="tone-example-text">Dear Mr. Johnson,\n\nI am writing to follow up on our previous discussion regarding the project timeline...</div></div>
+        </div>
+        <div class="pro-lock-overlay" onclick="openPremiumModal()">
+          <div style="font-size:2rem">🔒</div>
+          <div class="pro-lock-text">⚡ Pro Feature</div>
+          <div class="pro-lock-btn">Unlock Pro — $2.99</div>
+        </div>
+      </div>`;
+    return;
   }
+  el.innerHTML = `
+    <div class="tone-tabs">
+      <button class="tone-tab active" onclick="switchTone('professional', this)">💼 Professional</button>
+      <button class="tone-tab" onclick="switchTone('casual', this)">😊 Casual</button>
+      <button class="tone-tab" onclick="switchTone('academic', this)">🎓 Academic</button>
+    </div>
+    <div class="tone-content active" id="tone-professional">
+      <div class="tone-example"><div class="tone-example-label">✉ Email Example</div><div class="tone-example-text">Dear Mr. Johnson,\n\nI am writing to follow up on our previous discussion regarding the project timeline. Please find the updated report attached for your review.\n\nKind regards,\nSarah Ahmed</div></div>
+      <div class="card" style="margin-top:16px"><div class="card-header"><div class="card-title">📌 Professional Writing Rules</div></div><div class="card-body">
+        <div class="tone-rule"><span class="tone-rule-icon">✓</span>Use full words — avoid contractions (write "do not" not "don't")</div>
+        <div class="tone-rule"><span class="tone-rule-icon">✓</span>Start emails with "Dear [Name]" and end with "Kind regards" or "Yours sincerely"</div>
+        <div class="tone-rule"><span class="tone-rule-icon">✓</span>Use formal vocabulary — "assist" not "help", "require" not "need"</div>
+        <div class="tone-rule"><span class="tone-rule-icon">✓</span>Keep sentences clear and concise — avoid overly long sentences</div>
+        <div class="tone-rule"><span class="tone-rule-icon">✓</span>Never use slang, emojis, or informal phrases</div>
+        <div class="tone-rule"><span class="tone-rule-icon">✓</span>Always proofread before sending</div>
+      </div></div>
+    </div>
+    <div class="tone-content" id="tone-casual">
+      <div class="tone-example"><div class="tone-example-label">💬 Message Example</div><div class="tone-example-text">Hey John!\n\nJust wanted to check in about the project. I've attached the latest version — let me know what you think!\n\nCheers,\nSarah</div></div>
+      <div class="card" style="margin-top:16px"><div class="card-header"><div class="card-title">📌 Casual Writing Rules</div></div><div class="card-body">
+        <div class="tone-rule"><span class="tone-rule-icon">✓</span>Contractions are fine — "I'm", "don't", "you'll"</div>
+        <div class="tone-rule"><span class="tone-rule-icon">✓</span>Use first names — "Hey Sarah" instead of "Dear Ms. Ahmed"</div>
+        <div class="tone-rule"><span class="tone-rule-icon">✓</span>Shorter sentences are better — keep it conversational</div>
+        <div class="tone-rule"><span class="tone-rule-icon">✓</span>Use simple words — "help" not "assist", "get" not "obtain"</div>
+        <div class="tone-rule"><span class="tone-rule-icon">✓</span>A friendly emoji is fine in messages (not emails)</div>
+      </div></div>
+    </div>
+    <div class="tone-content" id="tone-academic">
+      <div class="tone-example"><div class="tone-example-label">📝 Academic Example</div><div class="tone-example-text">This study investigates the relationship between social media usage and academic performance among university students. The findings suggest a statistically significant negative correlation between excessive screen time and GPA scores.</div></div>
+      <div class="card" style="margin-top:16px"><div class="card-header"><div class="card-title">📌 Academic Writing Rules</div></div><div class="card-body">
+        <div class="tone-rule"><span class="tone-rule-icon">✓</span>Use third person — avoid "I think" — write "Research suggests"</div>
+        <div class="tone-rule"><span class="tone-rule-icon">✓</span>Be precise — use specific terms and avoid vague language</div>
+        <div class="tone-rule"><span class="tone-rule-icon">✓</span>Use formal linking words — "however", "furthermore", "consequently"</div>
+        <div class="tone-rule"><span class="tone-rule-icon">✓</span>Always cite sources and evidence</div>
+        <div class="tone-rule"><span class="tone-rule-icon">✓</span>Avoid contractions and informal vocabulary</div>
+      </div></div>
+    </div>`;
 }
 
-function onInput() {
-  const text = document.getElementById('main-input').value;
-  const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
-  const wc = document.getElementById('word-count');
-  const isOver = !state.isPremium && words > FREE_WORD_LIMIT;
-  wc.textContent = `${words} / ${state.isPremium ? '∞' : FREE_WORD_LIMIT} words`;
-  wc.className = 'word-count' + (isOver ? ' over' : words > FREE_WORD_LIMIT * 0.85 && !state.isPremium ? ' warn' : '');
-}
-
-function selectTone(tone) {
-  selectedTone = tone;
-  document.querySelectorAll('.tone-btn').forEach(b => b.classList.remove('active'));
+function switchTone(tone, btn) {
+  document.querySelectorAll('.tone-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tone-content').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
   document.getElementById('tone-' + tone).classList.add('active');
 }
 
-function requireProTone(tone) {
-  if (state.isPremium) {
-    document.getElementById('tone-' + tone).classList.remove('locked');
-    selectTone(tone);
-  } else {
-    openPremiumModal();
-  }
-}
-
-// ============================================================
-// MAIN CHECK
-// ============================================================
-async function checkGrammar() {
-  const input = document.getElementById('main-input').value.trim();
-  if (!input) { showToast('Please enter some text first!'); return; }
-
-  const words = input.split(/\s+/).length;
-
-  // Check word limit
-  if (!state.isPremium && words > FREE_WORD_LIMIT) {
-    showToast(`Free limit is ${FREE_WORD_LIMIT} words. Upgrade to Pro for unlimited!`);
-    openPremiumModal();
+// GRAMMAR RULES (PRO)
+function renderRulesSection() {
+  const el = document.getElementById('rules-section-content');
+  if (!state.isPremium) {
+    el.innerHTML = `
+      <div style="position:relative;border-radius:var(--radius-lg);overflow:hidden">
+        <div style="filter:blur(3px);pointer-events:none;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg)">
+          <div class="rule-card"><div class="rule-title">The Oxford Comma</div><div class="rule-desc">Use a comma before the last item in a list of three or more things.</div></div>
+        </div>
+        <div class="pro-lock-overlay" onclick="openPremiumModal()">
+          <div style="font-size:2rem">🔒</div>
+          <div class="pro-lock-text">⚡ Pro Feature — 15+ Grammar Rules</div>
+          <div class="pro-lock-btn">Unlock Pro — $2.99</div>
+        </div>
+      </div>`;
     return;
   }
+  const rules = [
+    { title: 'The Oxford Comma', desc: 'Use a comma before the last item in a list of three or more.', wrong: 'I like cats, dogs and birds.', right: 'I like cats, dogs, and birds.' },
+    { title: 'Semicolons', desc: 'Use a semicolon to join two closely related complete sentences.', wrong: 'I was tired, I went to bed early.', right: 'I was tired; I went to bed early.' },
+    { title: 'Colons', desc: 'Use a colon to introduce a list or explanation.', wrong: 'I need: milk, eggs and butter.', right: 'I need three things: milk, eggs, and butter.' },
+    { title: 'Hyphens in compound adjectives', desc: 'Hyphenate compound adjectives that come before a noun.', wrong: 'She is a well known singer.', right: 'She is a well-known singer.' },
+    { title: 'Dangling modifiers', desc: 'Make sure descriptive phrases refer to the correct subject.', wrong: 'Walking to school, the rain started.', right: 'Walking to school, I got caught in the rain.' },
+    { title: 'Parallel structure', desc: 'Keep the same grammatical form when listing items.', wrong: 'She likes running, to swim, and cycling.', right: 'She likes running, swimming, and cycling.' },
+    { title: 'That vs Which', desc: '"That" defines and restricts. "Which" adds extra information (use with commas).', wrong: 'The book which I borrowed was great.', right: 'The book that I borrowed was great.' },
+    { title: 'Subjunctive mood', desc: 'Use subjunctive for hypothetical or contrary-to-fact situations.', wrong: 'If I was you, I would leave.', right: 'If I were you, I would leave.' },
+    { title: 'Lie vs Lay', desc: '"Lie" means to recline. "Lay" means to place something down.', wrong: 'I am going to lay down.', right: 'I am going to lie down.' },
+    { title: 'Misplaced "only"', desc: 'Place "only" directly before the word it modifies.', wrong: 'I only eat vegetables on Mondays.', right: 'I eat only vegetables on Mondays.' },
+  ];
+  el.innerHTML = `<div class="rules-grid">${rules.map(r => `
+    <div class="rule-card">
+      <div class="rule-title">${r.title}</div>
+      <div class="rule-desc">${r.desc}</div>
+      <div class="rule-examples">
+        <div class="rule-ex wrong">✗ ${r.wrong}</div>
+        <div class="rule-ex right">✓ ${r.right}</div>
+      </div>
+    </div>`).join('')}</div>`;
+}
 
-  // Check daily limit
-  if (!state.isPremium && getChecksLeft() <= 0) {
-    showToast('Daily limit reached! Upgrade to Pro for unlimited checks.');
-    openPremiumModal();
+// EMAIL TEMPLATES (PRO)
+function renderEmailsSection() {
+  const el = document.getElementById('emails-section-content');
+  if (!state.isPremium) {
+    el.innerHTML = `
+      <div style="position:relative;border-radius:var(--radius-lg);overflow:hidden">
+        <div style="filter:blur(3px);pointer-events:none;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg)">
+          <div class="email-box"><div class="email-subject">SUBJECT LINE</div>Dear [Name],\n\nI am writing regarding...</div>
+        </div>
+        <div class="pro-lock-overlay" onclick="openPremiumModal()">
+          <div style="font-size:2rem">🔒</div>
+          <div class="pro-lock-text">⚡ Pro Feature — 10+ Email Templates</div>
+          <div class="pro-lock-btn">Unlock Pro — $2.99</div>
+        </div>
+      </div>`;
     return;
   }
-
-  lastInput = input;
-  incrementChecks();
-  updateUsageUI();
-
-  // Show loading
-  document.getElementById('loading-state').classList.add('visible');
-  document.getElementById('results-area').classList.remove('visible');
-  document.getElementById('check-btn').disabled = true;
-
-  // Smart local grammar processing
-  setTimeout(() => {
-    const result = processGrammar(input, selectedTone, state.isPremium);
-    displayResults(result, input);
-    document.getElementById('loading-state').classList.remove('visible');
-    document.getElementById('check-btn').disabled = false;
-  }, 800);
-}
-
-function processGrammar(input, tone, isPremium) {
-  let text = input;
-
-  // Fix common grammar issues
-  const corrections = [];
-  const fixes = [
-    { pattern: /\bi\b/g, fix: 'I', reason: '"I" should always be capitalized' },
-    { pattern: /\bdont\b/gi, fix: "don't", reason: 'Missing apostrophe in contraction' },
-    { pattern: /\bcant\b/gi, fix: "can't", reason: 'Missing apostrophe in contraction' },
-    { pattern: /\bwont\b/gi, fix: "won't", reason: 'Missing apostrophe in contraction' },
-    { pattern: /\bisnt\b/gi, fix: "isn't", reason: 'Missing apostrophe in contraction' },
-    { pattern: /\barent\b/gi, fix: "aren't", reason: 'Missing apostrophe in contraction' },
-    { pattern: /\bim\b/gi, fix: "I'm", reason: 'Missing apostrophe in contraction' },
-    { pattern: /\bive\b/gi, fix: "I've", reason: 'Missing apostrophe in contraction' },
-    { pattern: /\bill\b/gi, fix: "I'll", reason: 'Missing apostrophe in contraction' },
-    { pattern: /\bbuyed\b/gi, fix: 'bought', reason: 'Irregular past tense of "buy" is "bought"' },
-    { pattern: /\bgoed\b/gi, fix: 'went', reason: 'Irregular past tense of "go" is "went"' },
-    { pattern: /\bgoeded\b/gi, fix: 'went', reason: 'Irregular past tense of "go" is "went"' },
-    { pattern: /\bmore better\b/gi, fix: 'better', reason: 'Avoid double comparatives' },
-    { pattern: /\bvery unique\b/gi, fix: 'unique', reason: '"Unique" is absolute — no need for "very"' },
-    { pattern: /\b(me and) (\w+)\b/gi, fix: '$2 and I', reason: 'Use "X and I" as subject, not "me and X"' },
-    { pattern: /\bwas went\b/gi, fix: 'went', reason: 'Double past tense — use just "went"' },
+  const templates = [
+    { name: 'Job Application', subject: 'Application for [Job Title] — [Your Name]', body: `Dear Hiring Manager,\n\nI am writing to apply for the [Job Title] position advertised on [Platform]. With [X] years of experience in [Field], I am confident in my ability to contribute effectively to your team.\n\nPlease find my resume attached for your consideration. I would welcome the opportunity to discuss how my skills align with your requirements.\n\nThank you for your time and consideration.\n\nYours sincerely,\n[Your Name]` },
+    { name: 'Follow Up', subject: 'Follow-up: [Previous Topic]', body: `Dear [Name],\n\nI hope this message finds you well. I am writing to follow up on my previous email regarding [topic], sent on [date].\n\nCould you please provide an update at your earliest convenience? I want to ensure we stay on track with the agreed timeline.\n\nThank you for your attention to this matter.\n\nKind regards,\n[Your Name]` },
+    { name: 'Leave Request', subject: 'Annual Leave Request — [Your Name] — [Dates]', body: `Dear [Manager's Name],\n\nI am writing to formally request annual leave from [start date] to [end date] (inclusive), totaling [X] working days.\n\nI will ensure all pending tasks are completed before my departure and will brief [colleague name] to cover any urgent matters during my absence.\n\nPlease let me know if this is convenient or if you require any additional information.\n\nThank you for your consideration.\n\nBest regards,\n[Your Name]` },
+    { name: 'Apology', subject: 'Sincere Apologies Regarding [Issue]', body: `Dear [Name],\n\nI am writing to sincerely apologize for [issue]. I understand this may have caused inconvenience, and I take full responsibility for the error.\n\nI have taken immediate steps to [corrective action] to ensure this does not happen again.\n\nThank you for your patience and understanding.\n\nYours sincerely,\n[Your Name]` },
+    { name: 'Meeting Request', subject: 'Meeting Request — [Topic] — [Proposed Date]', body: `Dear [Name],\n\nI hope you are well. I would like to schedule a meeting to discuss [topic].\n\nWould you be available on [date] at [time]? The meeting should take approximately [duration]. Alternatively, please suggest a time that suits you.\n\nI look forward to hearing from you.\n\nKind regards,\n[Your Name]` },
+    { name: 'Thank You', subject: 'Thank You — [Reason]', body: `Dear [Name],\n\nI wanted to take a moment to sincerely thank you for [reason — e.g. your time during the interview / your support on the project].\n\nYour [guidance / assistance / insight] was invaluable and I truly appreciate the effort you invested.\n\nI look forward to [next step].\n\nWith gratitude,\n[Your Name]` },
   ];
-
-  fixes.forEach(f => {
-    if (f.pattern.test(text)) {
-      const original = text.match(f.pattern)?.[0];
-      if (original) corrections.push({ original, fixed: original.replace(f.pattern, f.fix), reason: f.reason });
-      text = text.replace(f.pattern, f.fix);
-    }
-  });
-
-  // Capitalize first letter of sentences
-  text = text.replace(/(^\s*\w|[.!?]\s+\w)/g, l => l.toUpperCase());
-
-  // Add period if missing
-  if (text && !text.match(/[.!?]$/)) text += '.';
-
-  // Apply tone adjustments
-  if (tone === 'professional') {
-    text = text
-      .replace(/\bkind of\b/gi, 'somewhat')
-      .replace(/\ba lot of\b/gi, 'numerous')
-      .replace(/\bget\b/gi, 'obtain')
-      .replace(/\bbig\b/gi, 'significant')
-      .replace(/\bgood\b/gi, 'excellent')
-      .replace(/\bshow\b/gi, 'demonstrate')
-      .replace(/\buse\b/gi, 'utilize')
-      .replace(/\bneed\b/gi, 'require')
-      .replace(/\bwant\b/gi, 'would like');
-  } else if (tone === 'casual') {
-    text = text
-      .replace(/\butilize\b/gi, 'use')
-      .replace(/\bdemonstrate\b/gi, 'show')
-      .replace(/\brequire\b/gi, 'need')
-      .replace(/\bobtain\b/gi, 'get');
-  } else if (tone === 'academic') {
-    text = text
-      .replace(/\ba lot of\b/gi, 'a substantial amount of')
-      .replace(/\bbig\b/gi, 'significant')
-      .replace(/\bshow\b/gi, 'demonstrate')
-      .replace(/\buse\b/gi, 'utilize')
-      .replace(/\bfind out\b/gi, 'ascertain')
-      .replace(/\blook into\b/gi, 'investigate')
-      .replace(/\bthink about\b/gi, 'consider');
-  }
-
-  // Vocabulary suggestions
-  const vocabMap = [
-    { weak: 'good', strong: 'excellent', reason: 'More impactful' },
-    { weak: 'bad', strong: 'inadequate', reason: 'More precise' },
-    { weak: 'big', strong: 'substantial', reason: 'More professional' },
-    { weak: 'small', strong: 'minimal', reason: 'More formal' },
-    { weak: 'get', strong: 'obtain', reason: 'More professional' },
-    { weak: 'use', strong: 'utilize', reason: 'More formal' },
-    { weak: 'show', strong: 'demonstrate', reason: 'More impactful' },
-    { weak: 'help', strong: 'assist', reason: 'More professional' },
-    { weak: 'make', strong: 'create', reason: 'More precise' },
-    { weak: 'need', strong: 'require', reason: 'More formal' },
-  ];
-  const vocabulary = vocabMap.filter(v => new RegExp(`\\b${v.weak}\\b`, 'i').test(input)).slice(0, 4);
-
-  return {
-    rewritten: text,
-    before: input,
-    after: text,
-    corrections: corrections.slice(0, 5),
-    vocabulary
-  };
-}
-
-function displayResults(result, original) {
-  // Rewritten
-  document.getElementById('rewritten-text').textContent = result.rewritten || '';
-
-  if (state.isPremium) {
-    // Before/after
-    document.getElementById('before-text').textContent = original;
-    document.getElementById('after-text').textContent = result.rewritten || '';
-    document.getElementById('comparison-card').classList.remove('locked-overlay');
-
-    // Corrections
-    const corrEl = document.getElementById('corrections-list');
-    if (result.corrections && result.corrections.length > 0) {
-      corrEl.innerHTML = result.corrections.map(c => `
-        <div class="correction-item">
-          <span class="correction-icon">🔧</span>
-          <div class="correction-content">
-            <div class="correction-original">${c.original}</div>
-            <div class="correction-fixed">${c.fixed}</div>
-            <div class="correction-reason">${c.reason}</div>
-          </div>
+  el.innerHTML = `
+    <div class="template-tabs">${templates.map((t, i) => `<button class="template-tab ${i===0?'active':''}" onclick="switchTemplate(${i}, this)">${t.name}</button>`).join('')}</div>
+    ${templates.map((t, i) => `
+      <div class="template-content ${i===0?'active':''}" id="template-${i}">
+        <div class="email-box">
+          <button class="email-copy-btn" onclick="copyEmail(${i})">Copy</button>
+          <div class="email-subject">SUBJECT: ${t.subject}</div>
+          ${t.body}
         </div>
-      `).join('');
-    } else {
-      corrEl.innerHTML = '<div style="color:var(--emerald);font-size:0.85rem;padding:8px 0">✓ No corrections needed — your writing is already strong!</div>';
-    }
-    document.getElementById('corrections-card').classList.remove('locked-overlay');
-
-    // Vocabulary
-    const vocabEl = document.getElementById('vocab-list');
-    if (result.vocabulary && result.vocabulary.length > 0) {
-      vocabEl.innerHTML = result.vocabulary.map(v => `
-        <div class="vocab-item">
-          <span class="vocab-weak">${v.weak}</span>
-          <span class="vocab-arrow">→</span>
-          <span class="vocab-strong">${v.strong}</span>
-          <span class="vocab-reason">${v.reason}</span>
-        </div>
-      `).join('');
-    } else {
-      vocabEl.innerHTML = '<div style="color:var(--emerald);font-size:0.85rem;padding:8px 0">✓ Your vocabulary is already excellent!</div>';
-    }
-    document.getElementById('vocab-card').classList.remove('locked-overlay');
-    document.getElementById('results-upgrade-btn').style.display = 'none';
-
-  } else {
-    // Lock pro sections
-    document.getElementById('comparison-card').classList.add('locked-overlay');
-    document.getElementById('corrections-card').classList.add('locked-overlay');
-    document.getElementById('vocab-card').classList.add('locked-overlay');
-    document.getElementById('results-upgrade-btn').style.display = 'inline-block';
-
-    // Add click to locked cards
-    ['comparison-card','corrections-card','vocab-card'].forEach(id => {
-      document.getElementById(id).onclick = openPremiumModal;
-    });
-  }
-
-  document.getElementById('results-area').classList.add('visible');
-  document.getElementById('results-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      </div>`).join('')}`;
+  window._emailTemplates = templates;
 }
 
-// ============================================================
-// UTILS
-// ============================================================
-function clearAll() {
-  document.getElementById('main-input').value = '';
-  document.getElementById('results-area').classList.remove('visible');
-  document.getElementById('word-count').textContent = '0 / 300 words';
-  document.getElementById('word-count').className = 'word-count';
+function switchTemplate(i, btn) {
+  document.querySelectorAll('.template-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.template-content').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('template-' + i).classList.add('active');
 }
 
-function copyResult(id) {
-  const text = document.getElementById(id).textContent;
-  navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard! ✓'));
+function copyEmail(i) {
+  const t = window._emailTemplates[i];
+  navigator.clipboard.writeText(`Subject: ${t.subject}\n\n${t.body}`).then(() => showToast('Email template copied! 📋'));
 }
 
-function showToast(msg) {
-  const c = document.getElementById('toast-container');
-  const t = document.createElement('div');
-  t.className = 'toast';
-  t.textContent = msg;
-  c.appendChild(t);
-  setTimeout(() => t.remove(), 3000);
-}
-
-// ============================================================
 // PREMIUM
-// ============================================================
-function openPremiumModal() {
-  document.getElementById('premium-modal').classList.remove('hidden');
-}
-function closeModal(id) {
-  document.getElementById(id).classList.add('hidden');
-}
-function handleUpgrade() {
-  window.open(GUMROAD_LINK, '_blank');
-  showToast('Complete payment then enter your code!');
-}
+function openPremiumModal() { document.getElementById('premium-modal').classList.remove('hidden'); }
+function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+function handleUpgrade() { window.open(GUMROAD_LINK, '_blank'); showToast('Complete payment then enter your code!'); }
 function redeemCode() {
   const code = document.getElementById('unlock-input').value.trim().toUpperCase();
   if (code === OWNER_CODE || code.startsWith('GC-')) {
-    state.isPremium = true;
-    saveState();
+    state.isPremium = true; saveState();
     closeModal('premium-modal');
     document.getElementById('pro-badge').classList.add('visible');
     document.getElementById('upgrade-btn').style.display = 'none';
-    // Unlock tone buttons
-    document.querySelectorAll('.tone-btn.locked').forEach(b => b.classList.remove('locked'));
-    onInput();
-    updateUsageUI();
-    showToast('🎉 Pro unlocked! Enjoy unlimited everything.');
+    document.getElementById('pro-words-section').style.display = 'none';
+    showToast('🎉 Pro unlocked! All features available.');
   } else {
     showToast('Invalid code — please check and try again.');
   }
 }
 
-// ============================================================
 // SHARE
-// ============================================================
 function openShareModal() {
   document.getElementById('share-whatsapp').href = `https://wa.me/?text=${encodeURIComponent(APP_MSG + ' ' + APP_URL)}`;
   document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(APP_MSG)}&url=${encodeURIComponent(APP_URL)}`;
-  document.getElementById('share-reddit').href = `https://reddit.com/submit?url=${encodeURIComponent(APP_URL)}&title=${encodeURIComponent('Free AI grammar checker and writing improver — GrammarCoach')}`;
+  document.getElementById('share-reddit').href = `https://reddit.com/submit?url=${encodeURIComponent(APP_URL)}&title=${encodeURIComponent('Free English grammar guide and writing tips — GrammarCoach')}`;
   document.getElementById('share-modal').classList.remove('hidden');
 }
-function copyLink() {
-  navigator.clipboard.writeText(APP_URL).then(() => {
-    showToast('Link copied! 🔗');
-    closeModal('share-modal');
-  });
+function copyLink() { navigator.clipboard.writeText(APP_URL).then(() => { showToast('Link copied! 🔗'); closeModal('share-modal'); }); }
+
+// TOAST
+function showToast(msg) {
+  const c = document.getElementById('toast-container');
+  const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg;
+  c.appendChild(t); setTimeout(() => t.remove(), 3000);
 }
 
-// ============================================================
 // INIT
-// ============================================================
 loadState();
-updateUsageUI();
+renderWords(FREE_WORDS);
+renderChecklist();
 if (state.isPremium) {
   document.getElementById('pro-badge').classList.add('visible');
   document.getElementById('upgrade-btn').style.display = 'none';
-  document.querySelectorAll('.tone-btn.locked').forEach(b => b.classList.remove('locked'));
+  document.getElementById('pro-words-section').style.display = 'none';
 }
 </script>
 </body>
